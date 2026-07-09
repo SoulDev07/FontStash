@@ -11,6 +11,7 @@ import {
   WavesIcon,
   PaletteIcon,
   CaretDownIcon,
+  CircleHalfIcon,
 } from "@phosphor-icons/react";
 
 export default function ThemeSwitcher() {
@@ -19,6 +20,7 @@ export default function ThemeSwitcher() {
   const menuRef = useRef(null);
 
   const options = [
+    { key: "system", label: "System", icon: CircleHalfIcon },
     { key: "light", label: "Light", icon: SunIcon },
     { key: "dark", label: "Dark", icon: MoonStarsIcon },
     { key: "custom", label: "Rose", icon: PaintBrushIcon },

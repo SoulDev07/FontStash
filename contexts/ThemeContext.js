@@ -1,35 +1,62 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { THEMES, DEFAULT_THEME_KEY } from "@/themes/themes";
-import { saveToLocalStorage } from "@/utils/localStorageUtils";
+import { saveToLocalStorage, loadFromLocalStorage } from "@/utils/localStorageUtils";
 
 const STORAGE_KEY = "font-stash:theme";
 
 const ThemeContext = createContext({
-  themeKey: DEFAULT_THEME_KEY,
+  themeKey: "system",
   setThemeKey: () => {},
   theme: THEMES[DEFAULT_THEME_KEY],
 });
 
 export function ThemeProvider({ children }) {
-  const [themeKey, setThemeKey] = useState(DEFAULT_THEME_KEY);
+  const [themeKey, setThemeKey] = useState("system");
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Apply CSS variables and persist
   useEffect(() => {
-    const theme = THEMES[themeKey] ?? THEMES[DEFAULT_THEME_KEY];
-    const root = document.documentElement;
-    Object.entries(theme.tokens).forEach(([k, v]) => {
-      root.style.setProperty(`--${k}`, v);
-    });
+    const stored = loadFromLocalStorage(STORAGE_KEY, "system");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setThemeKey(stored);
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const applyTheme = (key) => {
+      let activeKey = key;
+      if (key === "system") {
+        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        activeKey = isDark ? "dark" : "light";
+      }
+
+      const theme = THEMES[activeKey] ?? THEMES[DEFAULT_THEME_KEY];
+      const root = document.documentElement;
+      Object.entries(theme.tokens).forEach(([k, v]) => {
+        root.style.setProperty(`--${k}`, v);
+      });
+      root.setAttribute("data-theme", key);
+    };
+
+    applyTheme(themeKey);
     saveToLocalStorage(STORAGE_KEY, themeKey);
-  }, [themeKey]);
+
+    if (themeKey === "system") {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = () => applyTheme("system");
+      media.addEventListener("change", handler);
+      return () => media.removeEventListener("change", handler);
+    }
+  }, [themeKey, isLoaded]);
 
   const value = useMemo(
     () => ({
       themeKey,
       setThemeKey,
-      theme: THEMES[themeKey] ?? THEMES[DEFAULT_THEME_KEY],
+      theme: THEMES[themeKey] ?? THEMES[DEFAULT_THEME_KEY] ?? THEMES["dark"],
     }),
-    [themeKey]
+    [themeKey],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

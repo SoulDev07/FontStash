@@ -3,10 +3,6 @@ export default function FontCard({ font, text = "The quick brown fox jumps over 
 
   return (
     <div className="card font-card p-4 flex flex-col gap-3 relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-[0.08] pointer-events-none"
-        style={{ background: "linear-gradient(135deg, var(--primary), transparent)" }}
-      />
       <div className="flex items-start justify-between gap-4">
         <div className="text-sm text-muted truncate" title={originalName}>
           {originalName}

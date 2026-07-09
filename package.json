@@ -3,24 +3,25 @@
   "version": "1.0.0",
   "private": true,
   "description": "FontStash - Personal Font Playground.",
-  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd",
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
+  "packageManager": "pnpm@11.10.0+sha512.0b7f8b98060031904c017e3a41eb187a16d40eeb829b95c4f8cb03681761fc4ab53dd219115b9b447f4dce1a05a214764461e7d3703392a9f32f9511ce8c86c8",
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@tailwindcss/postcss": "^4.1.16",
-    "next": "16.0.1",
-    "postcss": "^8.5.6",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "tailwindcss": "^4.1.16"
+    "@tailwindcss/postcss": "^4.3.2",
+    "next": "16.2.10",
+    "postcss": "^8.5.16",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
-    "eslint": "^9.39.0",
-    "eslint-config-next": "^16.0.1"
+    "eslint": "^9.19.0",
+    "eslint-config-next": "^16.2.10"
   }
 }

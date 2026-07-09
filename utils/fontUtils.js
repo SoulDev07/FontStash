@@ -3,17 +3,14 @@ import { loadFromLocalStorage, saveToLocalStorage } from "./localStorageUtils";
 
 const FONTS_STORAGE_KEY = "font-stash:fonts";
 
-// Load full fonts array from localStorage
 export function loadStoredFonts() {
   return loadFromLocalStorage(FONTS_STORAGE_KEY, []);
 }
 
-// Save fonts array
 export function saveStoredFonts(fonts) {
   saveToLocalStorage(FONTS_STORAGE_KEY, fonts);
 }
 
-// Generate a stable unique id
 export function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
@@ -24,7 +21,6 @@ export function generateFontFamily(baseName, id) {
   return `${clean}-${id}`;
 }
 
-// Read a File object as a data URL
 export function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -51,17 +47,16 @@ export function detectFormatFromName(name = "") {
   }
 }
 
-// Inject @font-face into document for a given font
 export function registerFontFace(fontFamily, dataUrl, format = "truetype") {
   const styleId = `font-face-${fontFamily}`;
-  if (document.getElementById(styleId)) return; // Already injected
+  if (typeof document === "undefined" || document.getElementById(styleId)) return;
+
   const style = document.createElement("style");
   style.id = styleId;
   style.textContent = `@font-face { font-family: '${fontFamily}'; src: url('${dataUrl}') format('${format}'); font-display: swap; }`;
   document.head.appendChild(style);
 }
 
-// On boot, re-register all stored fonts
 export function rehydrateFonts() {
   const fonts = loadStoredFonts();
   fonts.forEach((f) => {
@@ -71,7 +66,6 @@ export function rehydrateFonts() {
   });
 }
 
-// Remove injected style for a font
 export function unregisterFontFace(fontFamily) {
   const styleId = `font-face-${fontFamily}`;
   const el = document.getElementById(styleId);
