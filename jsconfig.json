@@ -3,12 +3,20 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "baseUrl": ".",
+    "jsx": "react-jsx",
     "paths": {
       "@/*": ["./*"]
     }
   },
-  "exclude": ["node_modules", ".next", "out"]
+  "include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "build"
+  ]
 }
-

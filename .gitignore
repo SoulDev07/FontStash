@@ -1,9 +1,14 @@
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Next.js build output
 .next/
 out/
+build/
+
+# Oxlint
+.oxlintcache
 
 # Logs
 npm-debug.log*
@@ -13,6 +18,7 @@ pnpm-debug.log*
 
 # Env files
 .env*
+!.env.example
 
 # OS
 .DS_Store

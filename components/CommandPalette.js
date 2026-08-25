@@ -45,7 +45,7 @@ export default function CommandPalette({ allFonts = [] }) {
     { label: "Headline", value: "Grumpy wizards make toxic brew for the evil queen." },
     { label: "Paragraph", value: "Typography is the craft of endowing human language with a durable visual form." },
     { label: "Numerals", value: "0123456789" },
-    { label: "Punctuation", value: "!@#$%^&*()_+{}|:\"<>?[];',.\/" },
+    { label: "Punctuation", value: "!@#$%^&*()_+{}|:\"<>?[];',./" },
   ];
 
   return (

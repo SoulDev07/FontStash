@@ -8,25 +8,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
-  "packageManager": "pnpm@11.10.0+sha512.0b7f8b98060031904c017e3a41eb187a16d40eeb829b95c4f8cb03681761fc4ab53dd219115b9b447f4dce1a05a214764461e7d3703392a9f32f9511ce8c86c8",
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@tailwindcss/postcss": "^4.3.2",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "next": "16.2.10",
-    "postcss": "^8.5.16",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
+    "next": "16.3.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tailwind-merge": "^3.6.0",
-    "tailwindcss": "^4.3.2",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "eslint": "^9.19.0",
-    "eslint-config-next": "^16.2.10"
-  }
+    "@tailwindcss/postcss": "^4.3.3",
+    "oxlint": "^1.80.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3"
+  },
+  "packageManager": "pnpm@11.24.0+sha512.bd27e345e976dcb0be0b7a1228217b049a817e21b1f355c90dbe7dc46671895a8bc1e6d06c24554505ea93ea0b45f489a27ec1bfbc8de6a9659fca0f16fa0000"
 }
