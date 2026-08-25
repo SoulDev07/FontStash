@@ -37,6 +37,12 @@ export function ThemeProvider({ children }) {
         root.style.setProperty(`--${k}`, v);
       });
       root.setAttribute("data-theme", key);
+
+      if (activeKey === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
     };
 
     applyTheme(themeKey);

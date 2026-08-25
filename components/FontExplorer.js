@@ -1,24 +1,38 @@
 import FontRow from "@/components/FontRow";
 import FontCard from "@/components/FontCard";
 
-export default function FontExplorer({ fonts, viewMode, sampleText }) {
+export default function FontExplorer({ fonts, viewMode, settings }) {
   if (viewMode === "list") {
     return (
-      <div className="rounded-xl overflow-hidden border border-border/60 fade-in">
-        {fonts.map((font, i) => (
-          <div id={`font-${font.id}`} key={font.id} className={i % 2 === 0 ? "bg-card/30" : "bg-transparent"}>
-            <FontRow font={font} text={sampleText} />
+      <div className="overflow-x-auto border border-border bg-card rounded">
+        {/* List table header */}
+        <div className="flex min-w-[760px] items-center px-4 py-2 border-b border-border bg-panel/70 select-none">
+          <div className="w-72 shrink-0 text-[10px] font-mono font-bold text-muted uppercase tracking-wider">
+            Family & License
           </div>
-        ))}
+          <div className="flex-1 px-4 text-[10px] font-mono font-bold text-muted uppercase tracking-wider">
+            Typography Live Sample
+          </div>
+          <div className="w-36 shrink-0 text-[10px] font-mono font-bold text-muted uppercase tracking-wider text-right pr-2">
+            Actions
+          </div>
+        </div>
+        <div className="min-w-[760px] divide-y divide-border">
+          {fonts.map((font) => (
+            <div id={`font-${font.id}`} key={font.id}>
+              <FontRow font={font} text={settings.sampleText} settings={settings} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 view-toggle">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 view-toggle">
       {fonts.map((font) => (
         <div id={`font-${font.id}`} key={font.id} className="view-item">
-          <FontCard font={font} text={sampleText} />
+          <FontCard font={font} text={settings.sampleText} settings={settings} />
         </div>
       ))}
     </div>

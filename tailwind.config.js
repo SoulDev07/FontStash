@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -15,7 +15,7 @@ module.exports = {
         accent: "var(--accent)",
         card: "var(--card)",
         muted: "var(--muted)",
-        border: "var(--border)"
+        border: "var(--border)",
       },
       fontFamily: {
         ui: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", "Helvetica Neue", "Arial", "\"Apple Color Emoji\"", "\"Segoe UI Emoji\"", "\"Segoe UI Symbol\""]
@@ -30,3 +30,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;
