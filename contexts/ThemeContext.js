@@ -24,7 +24,7 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     if (!isLoaded) return;
 
-    const applyTheme = (key) => {
+    const applyTheme = (key, isDynamic = false) => {
       let activeKey = key;
       if (key === "system") {
         const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -33,6 +33,11 @@ export function ThemeProvider({ children }) {
 
       const theme = THEMES[activeKey] ?? THEMES[DEFAULT_THEME_KEY];
       const root = document.documentElement;
+
+      if (isDynamic) {
+        root.classList.add("theme-transitioning");
+      }
+
       Object.entries(theme.tokens).forEach(([k, v]) => {
         root.style.setProperty(`--${k}`, v);
       });
@@ -43,14 +48,20 @@ export function ThemeProvider({ children }) {
       } else {
         root.classList.remove("dark");
       }
+
+      if (isDynamic) {
+        setTimeout(() => {
+          root.classList.remove("theme-transitioning");
+        }, 300);
+      }
     };
 
-    applyTheme(themeKey);
+    applyTheme(themeKey, true);
     saveToLocalStorage(STORAGE_KEY, themeKey);
 
     if (themeKey === "system") {
       const media = window.matchMedia("(prefers-color-scheme: dark)");
-      const handler = () => applyTheme("system");
+      const handler = () => applyTheme("system", true);
       media.addEventListener("change", handler);
       return () => media.removeEventListener("change", handler);
     }

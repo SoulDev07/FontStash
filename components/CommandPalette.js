@@ -8,7 +8,7 @@ import {
   TextAaIcon,
   CardsIcon,
   ListIcon,
-  ColumnsIcon,
+  ScalesIcon,
   SparkleIcon,
 } from "@phosphor-icons/react";
 
@@ -49,7 +49,7 @@ export default function CommandPalette({ allFonts = [] }) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-start justify-center pt-[15vh] px-4 animate-pop">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-start justify-center pt-[12vh] px-4 animate-backdrop">
       <div
         className="fixed inset-0"
         onClick={() => setCommandOpen(false)}
@@ -57,38 +57,38 @@ export default function CommandPalette({ allFonts = [] }) {
       />
 
       <Command
-        className="relative w-full max-w-[580px] rounded border border-border bg-card overflow-hidden z-10 select-none"
+        className="relative w-full max-w-[620px] rounded-2xl border border-border bg-card shadow-2xl shadow-black/60 overflow-hidden z-10 select-none animate-modal"
         loop
       >
         {/* Search Header */}
-        <div className="flex items-center gap-3 px-3.5 border-b border-border">
-          <MagnifyingGlassIcon size={16} className="text-muted shrink-0" />
+        <div className="flex items-center gap-3 px-4 border-b border-border/80 bg-panel/30">
+          <MagnifyingGlassIcon size={18} className="text-muted shrink-0" />
           <Command.Input
-            placeholder="Type a command or search fonts..."
-            className="w-full py-3.5 text-xs font-medium bg-transparent outline-none text-text placeholder:text-muted"
+            placeholder="Type a command or search typefaces..."
+            className="w-full py-4 text-xs sm:text-sm font-medium bg-transparent outline-none text-text placeholder:text-muted"
             autoFocus
           />
-          <kbd className="text-[10px] font-mono px-1 py-0.2 rounded bg-panel border border-border text-muted">
+          <kbd className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-panel border border-border text-muted">
             ESC
           </kbd>
         </div>
 
         {/* Command List */}
-        <Command.List className="max-h-[360px] overflow-y-auto p-1.5 space-y-1">
-          <Command.Empty className="py-6 text-center text-xs text-muted">
+        <Command.List className="max-h-[380px] overflow-y-auto p-2 space-y-1 scrollbar-none">
+          <Command.Empty className="py-8 text-center text-xs text-muted">
             No matching commands or fonts found.
           </Command.Empty>
 
           {/* Group 1: Quick Views */}
-          <Command.Group heading="Views" className="text-[10px] font-mono uppercase tracking-widest text-muted px-2 py-1">
+          <Command.Group heading="Views" className="text-[10px] font-mono uppercase tracking-wider text-muted px-2.5 py-1.5 font-bold">
             <Command.Item
               onSelect={() => {
                 setViewMode("grid");
                 setCommandOpen(false);
               }}
-              className="flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
             >
-              <CardsIcon size={14} />
+              <CardsIcon size={15} />
               <span>Switch to Grid View</span>
             </Command.Item>
             <Command.Item
@@ -96,9 +96,9 @@ export default function CommandPalette({ allFonts = [] }) {
                 setViewMode("list");
                 setCommandOpen(false);
               }}
-              className="flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
             >
-              <ListIcon size={14} />
+              <ListIcon size={15} />
               <span>Switch to List View</span>
             </Command.Item>
             <Command.Item
@@ -106,15 +106,15 @@ export default function CommandPalette({ allFonts = [] }) {
                 setViewMode("compare");
                 setCommandOpen(false);
               }}
-              className="flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+              className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
             >
-              <ColumnsIcon size={14} />
+              <ScalesIcon size={15} />
               <span>Open Compare Workbench</span>
             </Command.Item>
           </Command.Group>
 
           {/* Group 2: Sample Text Presets */}
-          <Command.Group heading="Presets" className="text-[10px] font-mono uppercase tracking-widest text-muted px-2 py-1 mt-1.5">
+          <Command.Group heading="Presets" className="text-[10px] font-mono uppercase tracking-wider text-muted px-2.5 py-1.5 mt-2 font-bold">
             {presets.map((p) => (
               <Command.Item
                 key={p.label}
@@ -123,17 +123,17 @@ export default function CommandPalette({ allFonts = [] }) {
                   setCommandOpen(false);
                   showToast(`Applied preset: ${p.label}`);
                 }}
-                className="flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+                className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
               >
-                <SparkleIcon size={14} />
+                <SparkleIcon size={15} />
                 <span>Preset: {p.label}</span>
-                <span className="text-[10px] text-muted truncate ml-auto max-w-[180px] font-mono">{p.value}</span>
+                <span className="text-[10px] text-muted truncate ml-auto max-w-[200px] font-mono">{p.value}</span>
               </Command.Item>
             ))}
           </Command.Group>
 
           {/* Group 3: Color Themes */}
-          <Command.Group heading="Palettes" className="text-[10px] font-mono uppercase tracking-widest text-muted px-2 py-1 mt-1.5">
+          <Command.Group heading="Palettes" className="text-[10px] font-mono uppercase tracking-wider text-muted px-2.5 py-1.5 mt-2 font-bold">
             {Object.entries(THEMES).map(([key, t]) => (
               <Command.Item
                 key={key}
@@ -142,20 +142,20 @@ export default function CommandPalette({ allFonts = [] }) {
                   setCommandOpen(false);
                   showToast(`Theme switched to ${t.label}`);
                 }}
-                className="flex items-center gap-2.5 px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+                className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
               >
                 <span
-                  className="w-2.5 h-2.5 rounded-sm border border-border"
+                  className="w-3 h-3 rounded-sm border border-border"
                   style={{ backgroundColor: t.tokens.primary }}
                 />
                 <span>{t.label}</span>
-                {themeKey === key && <span className="text-[10px] font-mono text-primary ml-auto">Active</span>}
+                {themeKey === key && <span className="text-[10px] font-mono text-primary font-bold ml-auto">Active</span>}
               </Command.Item>
             ))}
           </Command.Group>
 
           {/* Group 4: Loaded Typefaces */}
-          <Command.Group heading="Loaded Typefaces" className="text-[10px] font-mono uppercase tracking-widest text-muted px-2 py-1 mt-1.5">
+          <Command.Group heading="Loaded Typefaces" className="text-[10px] font-mono uppercase tracking-wider text-muted px-2.5 py-1.5 mt-2 font-bold">
             {allFonts.map((f) => (
               <Command.Item
                 key={f.id}
@@ -163,11 +163,11 @@ export default function CommandPalette({ allFonts = [] }) {
                   setActiveSpecimenFont(f);
                   setCommandOpen(false);
                 }}
-                className="flex items-center justify-between px-2.5 py-1.5 text-xs rounded text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
+                className="flex items-center justify-between px-3 py-2 text-xs rounded-lg text-text hover:bg-panel cursor-pointer aria-selected:bg-panel aria-selected:text-primary"
               >
-                <div className="flex items-center gap-2 truncate">
-                  <TextAaIcon size={14} className="text-primary shrink-0" />
-                  <span className="font-semibold truncate">{f.originalName?.replace(/\.[^.]+$/, "")}</span>
+                <div className="flex items-center gap-2.5 truncate">
+                  <TextAaIcon size={15} className="text-primary shrink-0" />
+                  <span className="font-semibold truncate">{f.family || f.originalName?.replace(/\.[^.]+$/, "")}</span>
                   <span className="text-[10px] font-mono text-muted">{f.formatLabel}</span>
                 </div>
                 <span className="text-[10px] font-mono text-muted shrink-0">Open &rarr;</span>
@@ -177,7 +177,7 @@ export default function CommandPalette({ allFonts = [] }) {
         </Command.List>
 
         {/* Palette Footer */}
-        <div className="px-3.5 py-2 border-t border-border bg-panel flex items-center justify-between text-[10px] font-mono text-muted">
+        <div className="px-4 py-2.5 border-t border-border/80 bg-panel/50 flex items-center justify-between text-[10px] font-mono text-muted">
           <div className="flex items-center gap-3">
             <span>&uarr;&darr; Navigate</span>
             <span>&crarr; Select</span>

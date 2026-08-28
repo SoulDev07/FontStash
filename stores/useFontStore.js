@@ -41,7 +41,7 @@ export const useFontStore = create((set, get) => ({
   },
 
   // View & UI State
-  viewMode: "grid",
+  viewMode: "list",
   setViewMode: (mode) => set({ viewMode: mode }),
   commandOpen: false,
   setCommandOpen: (open) => set({ commandOpen: open }),
@@ -128,17 +128,30 @@ export const useFontStore = create((set, get) => ({
   query: "",
   setQuery: (q) => set({ query: q }),
   extensions: [],
-  licenses: [],
+  categoryFilter: "all",
+  setCategoryFilter: (c) => set({ categoryFilter: c }),
+  favoritesOnly: false,
+  setFavoritesOnly: (f) => set({ favoritesOnly: f }),
+  customOnly: false,
+  setCustomOnly: (c) => set({ customOnly: c }),
   sort: "index",
   setSort: (s) => set({ sort: s }),
-  toggleFilter: (value, type) => {
+  toggleFilter: (value) => {
     set((state) => {
-      const key = type === "extension" ? "extensions" : "licenses";
-      const current = state[key];
+      const current = state.extensions;
       const updated = current.includes(value)
         ? current.filter((item) => item !== value)
         : [...current, value];
-      return { [key]: updated };
+      return { extensions: updated };
+    });
+  },
+  clearAllFilters: () => {
+    set({
+      extensions: [],
+      categoryFilter: "all",
+      favoritesOnly: false,
+      customOnly: false,
+      sort: "index",
     });
   },
 

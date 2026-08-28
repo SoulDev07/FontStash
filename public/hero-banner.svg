@@ -1,86 +1,86 @@
-<svg width="1200" height="540" viewBox="0 0 1200 540" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">FontStash - Local-first font playground</title>
-  <desc id="desc">Brand hero for GitHub social previews: dark gradient, neon primary/accent glows, gradient logomark, bold title, and concise tagline.</desc>
-
+<svg width="1200" height="340" viewBox="0 0 1200 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FontStash - Local Typography Studio &amp; Font Workbench">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="540" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0b0b0d"/>
-      <stop offset="100%" stop-color="#141418"/>
-    </linearGradient>
-
-    <radialGradient id="glowPrimary" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1020 40) rotate(35) scale(560 320)">
-      <stop offset="0" stop-color="#6366f1" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#6366f1" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glowAccent" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 520) rotate(-25) scale(600 320)">
-      <stop offset="0" stop-color="#22c55e" stop-opacity="0.45"/>
-      <stop offset="1" stop-color="#22c55e" stop-opacity="0"/>
-    </radialGradient>
-
-    <linearGradient id="titleGrad" x1="360" y1="240" x2="840" y2="320" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6366f1"/>
-      <stop offset="1" stop-color="#22c55e"/>
-    </linearGradient>
-
-    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#22C55E"/>
-    </linearGradient>
-
-    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7"/>
-      <feColorMatrix type="saturate" values="0"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.02"/>
-      </feComponentTransfer>
-    </filter>
-
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#000000" flood-opacity="0.45"/>
-    </filter>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      .brand-title {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 46px;
+        font-weight: 700;
+        fill: #ffffff;
+        letter-spacing: -0.03em;
+      }
+      .brand-sub {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        fill: #a1a1aa;
+        letter-spacing: -0.01em;
+      }
+      .brand-tag {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        fill: #e4e4e7;
+      }
+      .brand-mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 10.5px;
+        font-weight: 500;
+        fill: #e4e4e7;
+      }
+    </style>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="540" fill="url(#bg)"/>
-  <rect width="1200" height="540" fill="url(#glowPrimary)"/>
-  <rect width="1200" height="540" fill="url(#glowAccent)"/>
-  <rect width="1200" height="540" filter="url(#grain)" opacity="0.3"/>
+  <!-- Solid Obsidian Background -->
+  <rect width="1200" height="340" fill="#000000"/>
 
-  <!-- Centered brand block -->
-  <g filter="url(#shadow)">
-    <!-- Card -->
-    <rect x="140" y="120" width="920" height="300" rx="28" fill="#111115" fill-opacity="0.65" stroke="#2a2a32"/>
+  <!-- Centered Card Container -->
+  <rect x="50" y="25" width="1100" height="290" rx="4" fill="#060608" stroke="#222226" stroke-width="1"/>
 
-    <!-- Logomark -->
-    <g transform="translate(200,200) scale(1.4)">
-      <rect x="6" y="6" width="52" height="52" rx="12" fill="url(#logoGrad)"/>
-      <g fill="white" opacity="0.95">
-        <path d="M20 42V22h18a2 2 0 1 1 0 4H24v6h9a2 2 0 1 1 0 4h-9v6h-4Z"/>
-        <circle cx="44" cy="42" r="2.5"/>
+  <!-- Centered Content -->
+  <g transform="translate(600, 68)" text-anchor="middle">
+    <!-- Brand Logo Mark (4px radius) -->
+    <g transform="translate(-24, 0) scale(1.5)">
+      <rect x="0.5" y="0.5" width="31" height="31" rx="4" fill="#000000" stroke="#333338" stroke-width="1"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8 6.5H25L22.2 9.5H15.4L13.8 13.5H21.5L18.8 16.5H12.6L9 25.5H6L12.8 6.5Z" fill="#ffffff"/>
+      <path d="M18 21.5H24.5L23 24.5H16.5L18 21.5Z" fill="#ffffff"/>
+    </g>
+
+    <!-- Main Title -->
+    <text y="88" class="brand-title">
+      FontStash
+    </text>
+
+    <!-- Subtitle -->
+    <text y="122" class="brand-sub">
+      Local-first typography playground &amp; OpenType inspection workbench
+    </text>
+
+    <!-- Clean Badges Row -->
+    <g transform="translate(0, 154)">
+      <!-- Badge 1 -->
+      <g transform="translate(-230, 0)">
+        <rect x="0" y="0" width="106" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="53" y="17" class="brand-tag" text-anchor="middle">Private &amp; Offline</text>
+      </g>
+
+      <!-- Badge 2 -->
+      <g transform="translate(-114, 0)">
+        <rect x="0" y="0" width="104" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="52" y="17" class="brand-tag" text-anchor="middle">Zero Cloud</text>
+      </g>
+
+      <!-- Badge 3 -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="134" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="67" y="17" class="brand-mono" text-anchor="middle">TTF • OTF • WOFF2</text>
+      </g>
+
+      <!-- Badge 4 -->
+      <g transform="translate(144, 0)">
+        <rect x="0" y="0" width="86" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="43" y="17" class="brand-tag" text-anchor="middle">OpenType</text>
       </g>
     </g>
-
-    <!-- Title and tagline (moved up 14px) -->
-    <text x="360" y="266" font-family="'Segoe UI','Inter','Arial',sans-serif" font-size="90" font-weight="800" fill="url(#titleGrad)">FontStash</text>
-    <text x="360" y="308" font-family="'Segoe UI','Inter','Arial',sans-serif" font-size="26" fill="#e5e7eb" fill-opacity="0.95">Local-first font playground</text>
-
-    <!-- Pills (kept extra 12px spacing below tagline) -->
-    <g transform="translate(0,12)">
-      <rect x="360" y="340" width="220" height="34" rx="17" fill="#15151a" stroke="#2a2a32"/>
-      <circle cx="378" cy="357" r="5" fill="#22c55e"/>
-      <text x="392" y="363" font-family="'Segoe UI','Inter','Arial',sans-serif" font-size="14" fill="#cfd2da">No backend</text>
-
-      <rect x="594" y="340" width="210" height="34" rx="17" fill="#15151a" stroke="#2a2a32"/>
-      <circle cx="612" cy="357" r="5" fill="#6366f1"/>
-      <text x="626" y="363" font-family="'Segoe UI','Inter','Arial',sans-serif" font-size="14" fill="#cfd2da">Drop fonts in /public</text>
-
-      <rect x="810" y="340" width="200" height="34" rx="17" fill="#15151a" stroke="#2a2a32"/>
-      <circle cx="828" cy="357" r="5" fill="#e5e7eb"/>
-      <text x="842" y="363" font-family="'Segoe UI','Inter','Arial',sans-serif" font-size="14" fill="#cfd2da">Next.js • Tailwind</text>
-    </g>
   </g>
-
-  <!-- Accent dots -->
-  <circle cx="92" cy="86" r="4" fill="#22c55e"/>
-  <circle cx="1108" cy="464" r="4" fill="#6366f1"/>
 </svg>

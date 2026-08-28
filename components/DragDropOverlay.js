@@ -7,6 +7,7 @@ import {
   uid,
   generateFontFamily,
 } from "@/utils/fontUtils";
+import { parseFontMetadata } from "@/utils/fontMetadata";
 import { CloudArrowUpIcon } from "@phosphor-icons/react";
 
 export default function DragDropOverlay() {
@@ -57,20 +58,14 @@ export default function DragDropOverlay() {
 
           await registerFontFaceFromBuffer(fontFamily, buffer, format);
 
+          const parsedMeta = parseFontMetadata(buffer, file.name, Date.now());
+
           const newFont = {
+            ...parsedMeta,
             id: fontId,
-            originalName: file.name,
-            family: file.name.replace(/\.[^.]+$/, ""),
             fontFamily,
             buffer,
             size: file.size,
-            extension: file.name.split(".").pop().toLowerCase(),
-            format,
-            formatLabel: file.name.split(".").pop().toUpperCase(),
-            style: /italic|oblique/i.test(file.name) ? "Italic" : "Normal",
-            weight: /bold|heavy/i.test(file.name) ? 700 : /light/i.test(file.name) ? 300 : 400,
-            license: "Custom Upload",
-            index: Date.now(),
             isCustom: true,
           };
 
@@ -102,11 +97,11 @@ export default function DragDropOverlay() {
   if (!isDragging) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl border-4 border-dashed border-primary flex flex-col items-center justify-center p-8 text-center animate-pop pointer-events-none">
-      <div className="w-16 h-16 rounded-2xl bg-primary/20 text-primary border border-primary/40 flex items-center justify-center mb-4">
+    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md border-4 border-dashed border-primary flex flex-col items-center justify-center p-8 text-center animate-backdrop pointer-events-none">
+      <div className="w-16 h-16 rounded-2xl bg-primary/20 text-primary border border-primary/40 flex items-center justify-center mb-4 animate-pulse-subtle shadow-xl shadow-primary/20">
         <CloudArrowUpIcon size={32} weight="bold" />
       </div>
-      <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
+      <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">
         Drop Font Files to Ingest
       </h2>
       <p className="text-xs text-gray-400 max-w-sm">

@@ -1,10 +1,5 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FontStash Logo">
-  <!-- Precision Obsidian Container -->
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect x="0.5" y="0.5" width="31" height="31" rx="4" fill="#000000" stroke="#27272A" stroke-width="1"/>
-
-  <!-- Slanted, Aerodynamic 'F' Glyph -->
   <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8 6.5H25L22.2 9.5H15.4L13.8 13.5H21.5L18.8 16.5H12.6L9 25.5H6L12.8 6.5Z" fill="#FFFFFF"/>
-
-  <!-- Signature Slanted Stash Shelf -->
   <path d="M18 21.5H24.5L23 24.5H16.5L18 21.5Z" fill="#FFFFFF"/>
 </svg>

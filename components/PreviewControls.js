@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useFontStore } from "@/stores/useFontStore";
 import {
   TextTIcon,
   SlidersIcon,
@@ -8,10 +9,13 @@ import {
   TextAlignCenterIcon,
   TextAlignRightIcon,
   TextAlignJustifyIcon,
+  HeartIcon,
+  CloudArrowUpIcon,
+  XIcon,
 } from "@phosphor-icons/react";
 
 const DEFAULT_SETTINGS = {
-  sampleText: "The quick brown fox jumps over the lazy dog",
+  sampleText: "The quick brown fox jumps over the lazy dog.",
   fontSize: 24,
   lineHeight: 1.5,
   letterSpacing: 0,
@@ -30,15 +34,37 @@ const presets = [
 export default function PreviewControls({
   settings,
   updateSetting,
-  fontsCount = 0,
-  extensions = [],
-  licenses = [],
-  sort = "index",
-  setSort,
-  toggleFilter,
 }) {
+  const {
+    extensions,
+    toggleFilter,
+    sort,
+    setSort,
+    categoryFilter,
+    setCategoryFilter,
+    favoritesOnly,
+    setFavoritesOnly,
+    customOnly,
+    setCustomOnly,
+    clearAllFilters,
+  } = useFontStore();
+
   const [showControls, setShowControls] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const filterRef = useRef(null);
+
+  // Close filter popover on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (filterRef.current && !filterRef.current.contains(e.target)) {
+        setShowFilter(false);
+      }
+    };
+    if (showFilter) {
+      document.addEventListener("mousedown", handleOutsideClick);
+      return () => document.removeEventListener("mousedown", handleOutsideClick);
+    }
+  }, [showFilter]);
 
   const reset = () => {
     Object.entries(DEFAULT_SETTINGS).forEach(([key, value]) => updateSetting(key, value));
@@ -51,235 +77,314 @@ export default function PreviewControls({
     settings.alignment === DEFAULT_SETTINGS.alignment &&
     settings.transform === DEFAULT_SETTINGS.transform;
 
+  // Calculate active filter count
+  const activeFiltersCount =
+    extensions.length +
+    (categoryFilter !== "all" ? 1 : 0) +
+    (favoritesOnly ? 1 : 0) +
+    (customOnly ? 1 : 0) +
+    (sort !== "index" ? 1 : 0);
+
   return (
-    <section className="rounded border border-border bg-card p-3">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-        {/* Sample text input */}
-        <div className="flex items-center gap-2.5 flex-1 min-w-[260px] h-9 px-3 rounded border border-border bg-panel/60 focus-within:border-primary">
+    <section className="card rounded p-3 shadow-xs transition-colors">
+      <div className="flex flex-col gap-2.5">
+        {/* Row 1: Sample text input */}
+        <div className="flex items-center gap-2.5 w-full h-9 px-3 rounded border border-border bg-panel/70 focus-within:border-text focus-within:bg-card transition-all duration-150">
           <TextTIcon size={15} className="text-muted shrink-0" />
           <input
             value={settings.sampleText}
             onChange={(e) => updateSetting("sampleText", e.target.value)}
-            placeholder="Type custom preview text..."
+            placeholder="Type custom preview specimen text..."
             className="w-full text-xs font-medium bg-transparent outline-none text-text placeholder:text-muted"
             aria-label="Preview text"
           />
         </div>
 
-        {/* Preset chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0">
-          {presets.map(([label, value]) => (
+        {/* Row 2: Presets & Action Triggers */}
+        <div className="flex items-center justify-between gap-2">
+          {/* Scrollable preset chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 min-w-0 flex-1 pr-1">
+            {presets.map(([label, value]) => {
+              const isActive = settings.sampleText === value;
+              return (
+                <button
+                  key={label}
+                  onClick={() => updateSetting("sampleText", value)}
+                  className={`shrink-0 text-xs font-mono h-7 px-2.5 rounded border transition-all duration-140 cursor-pointer active:scale-95 whitespace-nowrap ${
+                    isActive
+                      ? "bg-text text-bg border-text font-bold shadow-xs"
+                      : "bg-panel border-border text-muted hover:text-text hover:border-text"
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Action triggers */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <div className="relative" ref={filterRef}>
+              <button
+                onClick={() => setShowFilter((prev) => !prev)}
+                className={`h-7 text-xs px-2.5 rounded border inline-flex items-center gap-1.5 font-medium cursor-pointer transition-all duration-140 active:scale-95 ${
+                  showFilter || activeFiltersCount > 0
+                    ? "bg-text text-bg border-text shadow-xs font-bold"
+                    : "bg-panel border-border text-text hover:bg-card hover:border-text"
+                }`}
+                title="Filter and sort fonts"
+              >
+                <FunnelIcon size={13} weight={activeFiltersCount > 0 ? "fill" : "regular"} />
+                <span className="hidden sm:inline">Filter</span>
+                {activeFiltersCount > 0 && (
+                  <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-xs ${
+                    showFilter || activeFiltersCount > 0
+                      ? "bg-bg text-text font-bold"
+                      : "bg-panel text-muted"
+                  }`}>
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
+
+              {showFilter && (
+                <div className="absolute right-0 z-50 mt-1.5 w-72 max-w-[calc(100vw-32px)] card rounded p-3.5 shadow-2xl shadow-black/60 animate-popover bg-card border border-border">
+                  <div className="flex items-center justify-between mb-3 border-b border-border pb-2">
+                    <span className="text-[10px] font-mono uppercase font-bold text-muted tracking-wider flex items-center gap-1.5">
+                      <FunnelIcon size={12} />
+                      Filter &amp; Sort
+                    </span>
+                    {activeFiltersCount > 0 && (
+                      <button
+                        onClick={clearAllFilters}
+                        className="text-[10px] text-primary font-bold hover:underline cursor-pointer flex items-center gap-1 active:scale-95"
+                      >
+                        <XIcon size={10} />
+                        Clear all
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Classification Filter */}
+                  <div className="mb-3">
+                    <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold tracking-wider">Classification</p>
+                    <div className="flex flex-wrap gap-1">
+                      {[
+                        { id: "all", label: "All" },
+                        { id: "sans", label: "Sans" },
+                        { id: "serif", label: "Serif" },
+                        { id: "mono", label: "Mono" },
+                        { id: "display", label: "Display" },
+                      ].map((cat) => (
+                        <button
+                          key={cat.id}
+                          onClick={() => setCategoryFilter(cat.id)}
+                          className={`text-xs px-2 py-0.5 rounded-sm border transition-colors cursor-pointer active:scale-95 ${
+                            categoryFilter === cat.id
+                              ? "bg-text text-bg border-text font-semibold shadow-xs"
+                              : "bg-panel border-border text-muted hover:text-text hover:border-text"
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Formats Filter */}
+                  <div className="mb-3">
+                    <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold tracking-wider">File Formats</p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {["ttf", "otf", "woff", "woff2"].map((ext) => {
+                        const isChecked = extensions.includes(ext);
+                        return (
+                          <button
+                            key={ext}
+                            onClick={() => toggleFilter(ext)}
+                            className={`flex items-center gap-1.5 text-xs font-mono px-2 py-1 rounded-sm border transition-colors cursor-pointer select-none text-left active:scale-[0.98] ${
+                              isChecked
+                                ? "bg-panel border-text text-text font-bold"
+                                : "bg-panel/40 border-border text-muted hover:text-text hover:border-border/80"
+                            }`}
+                          >
+                            <span className={`w-2 h-2 rounded-xs border ${isChecked ? "bg-text border-text" : "border-border"}`} />
+                            <span>{ext.toUpperCase()}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Special Collections */}
+                  <div className="mb-3">
+                    <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold tracking-wider">Collections</p>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => setFavoritesOnly(!favoritesOnly)}
+                        className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-sm border transition-colors cursor-pointer select-none active:scale-[0.98] ${
+                          favoritesOnly
+                            ? "bg-danger/15 border-danger text-danger font-semibold"
+                            : "bg-panel/40 border-border text-muted hover:text-text"
+                        }`}
+                      >
+                        <HeartIcon size={12} weight={favoritesOnly ? "fill" : "regular"} />
+                        <span>Favorites</span>
+                      </button>
+
+                      <button
+                        onClick={() => setCustomOnly(!customOnly)}
+                        className={`flex items-center gap-1.5 text-xs px-2 py-1 rounded-sm border transition-colors cursor-pointer select-none active:scale-[0.98] ${
+                          customOnly
+                            ? "bg-primary/15 border-primary text-primary font-semibold"
+                            : "bg-panel/40 border-border text-muted hover:text-text"
+                        }`}
+                      >
+                        <CloudArrowUpIcon size={12} weight={customOnly ? "bold" : "regular"} />
+                        <span>Custom</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Sort Order */}
+                  <div>
+                    <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold tracking-wider">Sort Order</p>
+                    <select
+                      value={sort}
+                      onChange={(e) => setSort(e.target.value)}
+                      className="w-full rounded border border-border bg-panel px-2.5 py-1.5 text-xs text-text outline-none focus:border-text transition-colors cursor-pointer"
+                    >
+                      <option value="index">Default Order</option>
+                      <option value="az">Alphabetical (A &rarr; Z)</option>
+                      <option value="za">Alphabetical (Z &rarr; A)</option>
+                      <option value="glyphs">Glyph Count (Most first)</option>
+                      <option value="type">File Format (Extension)</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
-              key={label}
-              onClick={() => updateSetting("sampleText", value)}
-              className={`shrink-0 text-xs font-mono h-8 px-2.5 rounded border transition-colors cursor-pointer ${
-                settings.sampleText === value
-                  ? "bg-primary text-white border-primary font-bold"
-                  : "bg-panel border-border text-muted hover:text-text hover:border-text"
+              onClick={() => setShowControls(!showControls)}
+              className={`h-7 text-xs px-2.5 rounded border inline-flex items-center gap-1.5 font-medium cursor-pointer transition-all duration-140 active:scale-95 ${
+                showControls
+                  ? "bg-text text-bg border-text shadow-xs font-bold"
+                  : "bg-panel border-border text-text hover:bg-card hover:border-text"
               }`}
             >
-              {label}
+              <SlidersIcon size={13} />
+              <span className="hidden sm:inline">Inspector</span>
             </button>
-          ))}
+          </div>
         </div>
 
-        {/* Action triggers */}
-        <div className="flex items-center justify-between lg:justify-end gap-2 text-xs">
-          <span className="h-9 font-mono text-xs font-bold px-2.5 rounded bg-panel border border-border text-muted flex items-center">
-            {fontsCount} fonts
-          </span>
+        {/* Inspector Drawer */}
+        {showControls && (
+          <div className="pt-2.5 border-t border-border flex flex-col gap-2.5 animate-drawer-down">
+            {/* Sliders */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+              {/* Size */}
+              <div className="flex items-center justify-between gap-2.5 bg-panel/50 sm:bg-transparent px-2.5 py-1.5 sm:p-0 rounded border border-border/60 sm:border-0">
+                <span className="text-xs font-mono text-muted font-medium w-14 sm:w-auto">Size:</span>
+                <input
+                  type="range"
+                  min="8"
+                  max="120"
+                  value={settings.fontSize}
+                  onChange={(e) => updateSetting("fontSize", Number(e.target.value))}
+                  className="range-slider flex-1 sm:w-28"
+                />
+                <span className="text-xs font-mono font-bold text-text px-1.5 py-0.5 rounded bg-panel border border-border min-w-[44px] text-center shrink-0">
+                  {settings.fontSize}px
+                </span>
+              </div>
 
-          <div className="relative">
-            <button
-              onClick={() => setShowFilter(!showFilter)}
-              className={`h-9 text-xs px-3 rounded border inline-flex items-center gap-1.5 font-medium cursor-pointer transition-colors ${
-                showFilter || extensions.length > 0 || licenses.length > 0 || sort !== "index"
-                  ? "bg-primary text-white border-primary"
-                  : "bg-panel border-border text-text hover:bg-panel/80 hover:border-text"
-              }`}
-            >
-              <FunnelIcon size={14} />
-              <span>Filter</span>
-            </button>
+              {/* Line height */}
+              <div className="flex items-center justify-between gap-2.5 bg-panel/50 sm:bg-transparent px-2.5 py-1.5 sm:p-0 rounded border border-border/60 sm:border-0">
+                <span className="text-xs font-mono text-muted font-medium w-14 sm:w-auto">Height:</span>
+                <input
+                  type="range"
+                  min="0.8"
+                  max="3"
+                  step="0.1"
+                  value={settings.lineHeight}
+                  onChange={(e) => updateSetting("lineHeight", Number(e.target.value))}
+                  className="range-slider flex-1 sm:w-24"
+                />
+                <span className="text-xs font-mono font-bold text-text px-1.5 py-0.5 rounded bg-panel border border-border min-w-[38px] text-center shrink-0">
+                  {settings.lineHeight}
+                </span>
+              </div>
 
-            {showFilter && (
-              <div className="absolute right-0 z-30 mt-1 w-64 rounded border border-border bg-card p-3.5 animate-pop">
-                <div className="flex items-center justify-between mb-3 border-b border-border pb-2">
-                  <span className="text-[10px] font-mono uppercase font-bold text-muted">Filters & Sorting</span>
-                  {(extensions.length > 0 || licenses.length > 0) && (
+              {/* Letter spacing */}
+              <div className="flex items-center justify-between gap-2.5 bg-panel/50 sm:bg-transparent px-2.5 py-1.5 sm:p-0 rounded border border-border/60 sm:border-0">
+                <span className="text-xs font-mono text-muted font-medium w-14 sm:w-auto">Track:</span>
+                <input
+                  type="range"
+                  min="-10"
+                  max="40"
+                  value={settings.letterSpacing}
+                  onChange={(e) => updateSetting("letterSpacing", Number(e.target.value))}
+                  className="range-slider flex-1 sm:w-24"
+                />
+                <span className="text-xs font-mono font-bold text-text px-1.5 py-0.5 rounded bg-panel border border-border min-w-[42px] text-center shrink-0">
+                  {settings.letterSpacing}px
+                </span>
+              </div>
+            </div>
+
+            {/* Alignment & Transforms */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 pt-1 border-t border-border/40 sm:border-0">
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                <div className="flex items-center p-0.5 rounded border border-border bg-panel">
+                  {[
+                    { align: "left", icon: TextAlignLeftIcon },
+                    { align: "center", icon: TextAlignCenterIcon },
+                    { align: "right", icon: TextAlignRightIcon },
+                    { align: "justify", icon: TextAlignJustifyIcon },
+                  ].map(({ align, icon: Icon }) => (
                     <button
-                      onClick={() => {
-                        extensions.forEach((ext) => toggleFilter(ext, "extension"));
-                        licenses.forEach((lic) => toggleFilter(lic, "license"));
-                      }}
-                      className="text-[10px] text-primary font-bold hover:underline cursor-pointer"
+                      key={align}
+                      onClick={() => updateSetting("alignment", align)}
+                      className={`p-1.5 rounded transition-all duration-120 cursor-pointer active:scale-90 ${
+                        settings.alignment === align
+                          ? "bg-text text-bg shadow-xs font-bold"
+                          : "text-muted hover:text-text"
+                      }`}
+                      title={`Align ${align}`}
                     >
-                      Clear
+                      <Icon size={13} />
                     </button>
-                  )}
-                </div>
-
-                <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold">Formats</p>
-                <div className="mb-3 grid grid-cols-2 gap-2">
-                  {["ttf", "otf", "woff", "woff2"].map((ext) => (
-                    <label key={ext} className="flex items-center gap-1.5 text-xs font-mono text-text cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={extensions.includes(ext)}
-                        onChange={() => toggleFilter(ext, "extension")}
-                        className="rounded accent-primary"
-                      />
-                      {ext.toUpperCase()}
-                    </label>
                   ))}
                 </div>
 
-                <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold">License</p>
-                <div className="mb-3 flex gap-3">
-                  {["Commercial", "Personal"].map((lic) => (
-                    <label key={lic} className="flex items-center gap-1.5 text-xs text-text cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={licenses.includes(lic)}
-                        onChange={() => toggleFilter(lic, "license")}
-                        className="rounded accent-primary"
-                      />
-                      {lic}
-                    </label>
-                  ))}
-                </div>
-
-                <p className="mb-1.5 text-[10px] font-mono uppercase text-muted font-bold">Sort</p>
                 <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value)}
-                  className="w-full rounded border border-border bg-panel px-2.5 py-1.5 text-xs text-text outline-none focus:border-primary"
+                  value={settings.transform}
+                  onChange={(e) => updateSetting("transform", e.target.value)}
+                  className="h-7.5 rounded border border-border bg-panel px-2.5 text-xs font-medium text-text outline-none focus:border-text transition-colors"
                 >
-                  <option value="index">Index Order</option>
-                  <option value="az">Alphabetical (A-Z)</option>
-                  <option value="za">Alphabetical (Z-A)</option>
-                  <option value="type">File Type</option>
+                  <option value="none">Normal Case</option>
+                  <option value="uppercase">UPPERCASE</option>
+                  <option value="lowercase">lowercase</option>
+                  <option value="capitalize">Title Case</option>
                 </select>
               </div>
-            )}
-          </div>
 
-          <button
-            onClick={() => setShowControls(!showControls)}
-            className={`h-9 text-xs px-3 rounded border inline-flex items-center gap-1.5 font-medium cursor-pointer transition-colors ${
-              showControls
-                ? "bg-primary text-white border-primary"
-                : "bg-panel border-border text-text hover:bg-panel/80 hover:border-text"
-            }`}
-          >
-            <SlidersIcon size={14} />
-            <span>Inspector</span>
-          </button>
-        </div>
-      </div>
-
-      {showControls && (
-        <div className="mt-3 pt-3 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-4 animate-slide-down">
-          <div className="flex flex-wrap items-center gap-5">
-            {/* Size */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted font-semibold">Size:</span>
-              <input
-                type="range"
-                min="8"
-                max="120"
-                value={settings.fontSize}
-                onChange={(e) => updateSetting("fontSize", Number(e.target.value))}
-                className="range-slider w-24"
-              />
-              <span className="text-xs font-mono font-bold text-text w-9 text-right">
-                {settings.fontSize}px
-              </span>
-            </div>
-
-            {/* Line height */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted font-semibold">Height:</span>
-              <input
-                type="range"
-                min="0.8"
-                max="3"
-                step="0.1"
-                value={settings.lineHeight}
-                onChange={(e) => updateSetting("lineHeight", Number(e.target.value))}
-                className="range-slider w-20"
-              />
-              <span className="text-xs font-mono font-bold text-text w-8 text-right">
-                {settings.lineHeight}
-              </span>
-            </div>
-
-            {/* Letter spacing */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted font-semibold">Spacing:</span>
-              <input
-                type="range"
-                min="-10"
-                max="40"
-                value={settings.letterSpacing}
-                onChange={(e) => updateSetting("letterSpacing", Number(e.target.value))}
-                className="range-slider w-20"
-              />
-              <span className="text-xs font-mono font-bold text-text w-8 text-right">
-                {settings.letterSpacing}px
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Alignment Buttons */}
-            <div className="flex items-center p-0.5 rounded border border-border bg-panel">
-              {[
-                { align: "left", icon: TextAlignLeftIcon },
-                { align: "center", icon: TextAlignCenterIcon },
-                { align: "right", icon: TextAlignRightIcon },
-                { align: "justify", icon: TextAlignJustifyIcon },
-              ].map(({ align, icon: Icon }) => (
+              {!isDefault && (
                 <button
-                  key={align}
-                  onClick={() => updateSetting("alignment", align)}
-                  className={`p-1.5 rounded transition-colors cursor-pointer ${
-                    settings.alignment === align
-                      ? "bg-primary text-white"
-                      : "text-muted hover:text-text"
-                  }`}
-                  title={`Align ${align}`}
+                  onClick={reset}
+                  className="h-7.5 px-2 rounded border border-border text-xs text-muted hover:text-text hover:border-text inline-flex items-center gap-1 cursor-pointer font-medium transition-all duration-120 active:scale-95 ml-auto sm:ml-0"
+                  title="Reset settings"
                 >
-                  <Icon size={14} />
+                  <ArrowCounterClockwiseIcon size={12} />
+                  <span>Reset</span>
                 </button>
-              ))}
+              )}
             </div>
-
-            {/* Case Selection */}
-            <select
-              value={settings.transform}
-              onChange={(e) => updateSetting("transform", e.target.value)}
-              className="h-8 rounded border border-border bg-panel px-2.5 text-xs font-medium text-text outline-none focus:border-primary"
-            >
-              <option value="none">Normal Case</option>
-              <option value="uppercase">UPPERCASE</option>
-              <option value="lowercase">lowercase</option>
-              <option value="capitalize">Title Case</option>
-            </select>
-
-            {!isDefault && (
-              <button
-                onClick={reset}
-                className="h-8 px-2.5 rounded border border-border text-xs text-muted hover:text-primary hover:border-primary inline-flex items-center gap-1 cursor-pointer font-medium"
-                title="Reset settings"
-              >
-                <ArrowCounterClockwiseIcon size={13} />
-                <span>Reset</span>
-              </button>
-            )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
+

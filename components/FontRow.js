@@ -5,7 +5,7 @@ import {
   CopyIcon,
   CheckIcon,
   HeartIcon,
-  ColumnsIcon,
+  ScalesIcon,
 } from "@phosphor-icons/react";
 
 export default function FontRow({ font, text, settings }) {
@@ -35,17 +35,19 @@ export default function FontRow({ font, text, settings }) {
     letterSpacing: settings ? `${settings.letterSpacing}px` : undefined,
     textAlign: settings ? settings.alignment : undefined,
     textTransform: settings?.transform !== "none" ? settings?.transform : undefined,
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
   };
 
   const getFormatLabel = () => font.formatLabel || originalName.split(".").pop()?.toUpperCase() || "";
-  const cleanTitle = originalName.replace(/\.[^.]+$/, "");
-  const isCommercial = font.license === "Commercial";
+  const cleanTitle = font.family || originalName.replace(/\.[^.]+$/, "");
 
   const copyCssSnippet = () => {
-    const css = `@font-face {\n  font-family: '${cleanTitle}';\n  src: url('${font.url || `/fonts/${originalName}`}') format('${format}');\n  font-display: swap;\n}`;
+    const cleanName = font.family || originalName.replace(/\.[^.]+$/, "");
+    const css = `@font-face {\n  font-family: '${cleanName}';\n  src: url('${font.url || `/fonts/${originalName}`}') format('${format}');\n  font-display: swap;\n}`;
     navigator.clipboard.writeText(css).then(() => {
       setCopied(true);
-      showToast(`Copied CSS for ${cleanTitle}`);
+      showToast(`Copied CSS for ${cleanName}`);
       setTimeout(() => setCopied(false), 2000);
     });
   };
@@ -61,9 +63,10 @@ export default function FontRow({ font, text, settings }) {
   };
 
   return (
-    <div className="group w-full bg-card hover:bg-panel/40 transition-colors">
-      <div className="flex min-w-[760px] items-center px-4 py-3.5 gap-4">
-        {/* Font family & license column */}
+    <div className="group w-full bg-card hover:bg-panel/40 transition-colors duration-150">
+      {/* Desktop / Tablet Horizontal Table View */}
+      <div className="hidden md:flex min-w-[840px] items-center px-4 py-3 gap-5">
+        {/* Font family & details column */}
         <div
           className="w-72 shrink-0 flex items-center justify-between gap-3 pr-4 border-r border-border cursor-pointer"
           onClick={() => setActiveSpecimenFont(font)}
@@ -71,30 +74,26 @@ export default function FontRow({ font, text, settings }) {
           <div className="truncate min-w-0">
             <h4
               className="text-sm font-bold text-text group-hover:text-primary transition-colors truncate"
-              title={originalName}
+              title={cleanTitle}
             >
               {cleanTitle}
             </h4>
-            <span className="text-[11px] font-mono text-muted font-medium">
-              {font.extension?.toUpperCase() || getFormatLabel()}
-            </span>
+            <p className="text-[11px] font-mono text-muted font-medium truncate mt-0.5" title={`${font.style || "Normal"} • ${font.weight || 400}`}>
+              {font.style || "Normal"} &bull; {font.weight || 400}
+            </p>
           </div>
 
-          <span
-            className={`text-[10px] font-mono px-2 py-0.5 rounded border shrink-0 font-semibold ${
-              isCommercial
-                ? "bg-primary/10 text-primary border-primary/30"
-                : "bg-panel text-text border-border"
-            }`}
-          >
-            {isCommercial ? "Commercial" : "Free"}
-          </span>
+          <div className="flex items-center gap-1 shrink-0">
+            <span className="tag tag-accent text-[10px]" suppressHydrationWarning>
+              {getFormatLabel()}
+            </span>
+          </div>
         </div>
 
         {/* Live preview column */}
         <div
           onClick={() => setActiveSpecimenFont(font)}
-          className="flex-1 px-4 truncate min-w-0 text-text cursor-pointer leading-normal"
+          className="flex-1 px-3 truncate min-w-0 text-text cursor-pointer leading-normal select-none"
           style={previewStyle}
           title="Click to open specimen inspector"
         >
@@ -108,7 +107,7 @@ export default function FontRow({ font, text, settings }) {
               toggleFavorite(font.id);
               showToast(isFav ? "Removed from favorites" : "Added to favorites");
             }}
-            className={`w-7 h-7 rounded border transition-colors flex items-center justify-center cursor-pointer ${
+            className={`w-7 h-7 rounded border transition-all duration-150 flex items-center justify-center cursor-pointer active:scale-90 ${
               isFav
                 ? "bg-danger/15 border-danger text-danger"
                 : "border-border text-muted hover:text-danger hover:border-danger bg-panel/50"
@@ -123,31 +122,110 @@ export default function FontRow({ font, text, settings }) {
               toggleCompare(font.id);
               showToast(isCompared ? "Removed from compare" : "Added to compare list");
             }}
-            className={`w-7 h-7 rounded border transition-colors flex items-center justify-center cursor-pointer ${
+            className={`w-7 h-7 rounded border transition-all duration-150 flex items-center justify-center cursor-pointer active:scale-90 ${
               isCompared
                 ? "bg-primary/15 border-primary text-primary"
                 : "border-border text-muted hover:text-primary hover:border-primary bg-panel/50"
             }`}
             title={isCompared ? "In compare workbench" : "Add to compare"}
           >
-            <ColumnsIcon size={14} weight={isCompared ? "fill" : "regular"} />
+            <ScalesIcon size={14} weight={isCompared ? "fill" : "regular"} />
           </button>
 
           <button
             onClick={copyCssSnippet}
-            className="w-7 h-7 rounded border border-border text-muted hover:text-primary hover:border-primary bg-panel/50 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-7 h-7 rounded border border-border text-muted hover:text-primary hover:border-primary bg-panel/50 flex items-center justify-center transition-all duration-150 cursor-pointer active:scale-90"
             title="Copy @font-face CSS"
           >
-            {copied ? <CheckIcon size={13} className="text-success" weight="bold" /> : <CopyIcon size={13} />}
+            {copied ? <CheckIcon size={12} className="text-success" weight="bold" /> : <CopyIcon size={12} />}
           </button>
 
           <button
             onClick={handleDownload}
-            className="w-7 h-7 rounded border border-border bg-panel text-text hover:bg-card hover:border-text flex items-center justify-center cursor-pointer transition-colors"
+            className="w-7 h-7 rounded border border-border bg-panel text-text hover:bg-card hover:border-primary hover:text-primary flex items-center justify-center cursor-pointer transition-all duration-150 active:scale-90"
             title="Download font file"
           >
-            <DownloadSimpleIcon size={14} weight="bold" />
+            <DownloadSimpleIcon size={12} weight="bold" />
           </button>
+        </div>
+      </div>
+
+      {/* Mobile Stacked Card Row */}
+      <div className="flex md:hidden flex-col p-3.5 gap-2.5 border-b border-border">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1 cursor-pointer" onClick={() => setActiveSpecimenFont(font)}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h4 className="text-sm font-bold text-text truncate">{cleanTitle}</h4>
+              <span className="tag tag-accent text-[9px]" suppressHydrationWarning>
+                {getFormatLabel()}
+              </span>
+            </div>
+            <p className="text-[11px] font-mono text-muted truncate mt-0.5">
+              {font.style || "Normal"} &bull; {font.weight || 400}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            <button
+              onClick={() => {
+                toggleFavorite(font.id);
+                showToast(isFav ? "Removed from favorites" : "Added to favorites");
+              }}
+              className={`w-7 h-7 rounded border flex items-center justify-center cursor-pointer active:scale-90 ${
+                isFav
+                  ? "bg-danger/15 border-danger text-danger"
+                  : "border-border text-muted hover:text-danger bg-panel/50"
+              }`}
+            >
+              <HeartIcon size={13} weight={isFav ? "fill" : "regular"} />
+            </button>
+            <button
+              onClick={() => {
+                toggleCompare(font.id);
+                showToast(isCompared ? "Removed from compare" : "Added to compare list");
+              }}
+              className={`w-7 h-7 rounded border flex items-center justify-center cursor-pointer active:scale-90 ${
+                isCompared
+                  ? "bg-primary/15 border-primary text-primary"
+                  : "border-border text-muted hover:text-primary bg-panel/50"
+              }`}
+            >
+              <ScalesIcon size={13} weight={isCompared ? "fill" : "regular"} />
+            </button>
+          </div>
+        </div>
+
+        {/* Live preview */}
+        <div
+          onClick={() => setActiveSpecimenFont(font)}
+          className="py-1.5 text-text cursor-pointer leading-normal select-none overflow-hidden"
+          style={previewStyle}
+        >
+          {preview}
+        </div>
+
+        {/* Footer actions */}
+        <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
+          <span className="text-[10px] font-mono text-muted">
+            {font.numGlyphs ? `${font.numGlyphs} Glyphs` : font.formatLabel}
+          </span>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={copyCssSnippet}
+              className="btn text-xs px-2 py-0.5 rounded border border-border bg-card inline-flex items-center gap-1 cursor-pointer font-mono hover:text-primary hover:border-primary"
+            >
+              {copied ? <CheckIcon size={11} className="text-success" /> : <CopyIcon size={11} />}
+              <span>CSS</span>
+            </button>
+            <button
+              onClick={handleDownload}
+              className="btn text-xs px-2 py-0.5 rounded border border-border bg-panel text-text hover:bg-card hover:text-primary hover:border-primary inline-flex items-center gap-1 cursor-pointer"
+            >
+              <DownloadSimpleIcon size={11} weight="bold" />
+              <span>Download</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

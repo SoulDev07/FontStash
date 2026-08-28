@@ -4,25 +4,25 @@ export default function EmptyState() {
   const supportedFormats = ["TTF", "OTF", "WOFF", "WOFF2"];
 
   return (
-    <div className="card p-12 flex flex-col items-center justify-center text-center gap-6 min-h-[360px] rounded-2xl border-dashed border-2 border-border/70 bg-panel/30 backdrop-blur-xl">
+    <div className="card p-12 sm:p-16 flex flex-col items-center justify-center text-center gap-6 min-h-[400px] rounded-2xl border-dashed border-2 border-border/80 bg-panel/20 backdrop-blur-xl">
       {/* Glyph illustration */}
       <div className="relative select-none">
-        <div className="text-[84px] font-serif text-primary/20 leading-none tracking-tighter">
+        <div className="text-[96px] font-serif text-muted/20 leading-none tracking-tighter">
           Aa
         </div>
-        <div className="absolute -bottom-1 -right-3 p-2.5 rounded-xl bg-primary/15 border border-primary/30 shadow-xs">
-          <FolderOpenIcon size={22} className="text-primary" />
+        <div className="absolute -bottom-1 -right-3 p-3 rounded-xl bg-panel border border-border text-text shadow-sm">
+          <FolderOpenIcon size={22} />
         </div>
       </div>
 
       {/* Instructions */}
-      <div className="max-w-sm">
-        <h3 className="text-lg font-bold text-text font-heading mb-1.5">
-          No font files found
+      <div className="max-w-md space-y-2">
+        <h3 className="text-xl font-bold text-text tracking-tight font-sans">
+          No typefaces found
         </h3>
-        <p className="text-xs text-muted leading-relaxed">
-          Drop your typography files into the{" "}
-          <code className="text-xs font-mono bg-border/40 px-2 py-0.5 rounded-md text-text font-semibold">
+        <p className="text-xs sm:text-sm text-muted leading-relaxed">
+          Drop your typography files anywhere onto this window or place them into the{" "}
+          <code className="text-xs font-mono bg-panel border border-border px-2 py-0.5 rounded-md text-text font-semibold">
             public/fonts
           </code>{" "}
           directory to live inspect and test them.
@@ -30,12 +30,12 @@ export default function EmptyState() {
       </div>
 
       {/* Supported formats */}
-      <div className="flex items-center gap-2">
-        <span className="text-[10px] text-muted font-semibold uppercase tracking-wider">Supports:</span>
+      <div className="flex items-center gap-2 flex-wrap justify-center">
+        <span className="text-[10px] text-muted font-semibold uppercase tracking-wider font-mono">Supports:</span>
         {supportedFormats.map((fmt) => (
           <span
             key={fmt}
-            className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-card border border-border/70 text-muted"
+            className="text-[11px] font-mono font-bold px-3 py-1 rounded-md bg-card border border-border text-text"
           >
             {fmt}
           </span>
@@ -43,17 +43,17 @@ export default function EmptyState() {
       </div>
 
       {/* Steps */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-md mt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 w-full max-w-lg mt-2">
         {[
-          { step: "1", label: "Add font files to public/fonts" },
-          { step: "2", label: "Refresh or restart dev server" },
-          { step: "3", label: "Live inspect across themes" },
+          { step: "1", label: "Drag & drop font files" },
+          { step: "2", label: "Private IndexedDB store" },
+          { step: "3", label: "Live test & compare" },
         ].map((item) => (
           <div
             key={item.step}
-            className="flex items-center gap-2.5 bg-card/80 border border-border/70 rounded-xl px-3.5 py-2.5 shadow-2xs"
+            className="flex items-center gap-3 bg-card border border-border rounded-xl px-4 py-3 shadow-2xs hover:border-text/40 transition-all duration-150 text-left"
           >
-            <span className="text-[11px] font-bold text-primary bg-primary/15 w-6 h-6 rounded-lg flex items-center justify-center shrink-0 border border-primary/20">
+            <span className="text-xs font-bold text-bg bg-primary w-6 h-6 rounded-md flex items-center justify-center shrink-0">
               {item.step}
             </span>
             <span className="text-xs font-medium text-text">{item.label}</span>
@@ -63,4 +63,3 @@ export default function EmptyState() {
     </div>
   );
 }
-
