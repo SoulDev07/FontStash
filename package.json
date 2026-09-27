@@ -13,20 +13,22 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "next": "16.3.4",
+    "modern-screenshot": "^4.7.0",
+    "next": "16.3.6",
     "opentype.js": "^2.0.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "tailwind-merge": "^3.6.0",
+    "react": "19.3.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "19.3.0",
+    "woff2-encoder": "^2.0.0",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "oxlint": "^1.81.0",
+    "oxlint": "^1.85.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3"
   },
-  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457"
+  "packageManager": "pnpm@12.6.0+sha512.3ef68f951cb111ac204b4a5a16f0b2ddf0da56a96e0413e81d855d9f0b55ef926714709028e1cd00c405c2c5fb7b9e8ec4dc46777c805d0373c2f2ff00fd20ec"
 }
