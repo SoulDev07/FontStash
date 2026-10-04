@@ -175,7 +175,7 @@ export default function FontSpecimenModal() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`text-xs font-medium px-2.5 py-1 rounded transition-all duration-150 cursor-pointer active:scale-95 whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "bg-primary text-white shadow-xs"
+                    ? "bg-primary text-bg shadow-xs"
                     : "text-muted hover:text-text hover:bg-panel"
                 }`}
               >

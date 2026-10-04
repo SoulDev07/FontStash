@@ -95,7 +95,7 @@ export default function PosterLab({ allFonts = [] }) {
                 onClick={() => setActivePreset(preset.id)}
                 className={`px-2.5 py-1.5 text-xs text-left rounded border transition-all duration-120 cursor-pointer ${
                   activePreset === preset.id
-                    ? "bg-primary text-white border-primary font-medium shadow-xs"
+                    ? "bg-primary text-bg border-primary font-medium shadow-xs"
                     : "bg-panel/60 text-muted border-border hover:text-text hover:bg-panel"
                 }`}
               >
@@ -192,7 +192,7 @@ export default function PosterLab({ allFonts = [] }) {
           <button
             onClick={handleExportPng}
             disabled={exporting}
-            className="w-full py-2 px-3 rounded-md bg-primary hover:bg-primary/90 text-white text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98 transition-all disabled:opacity-50"
+            className="w-full py-2 px-3 rounded-md bg-primary hover:bg-primary/90 text-bg text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98 transition-all disabled:opacity-50"
           >
             {exporting ? (
               <ArrowsClockwiseIcon size={14} className="animate-spin" />

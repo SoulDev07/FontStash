@@ -125,7 +125,7 @@ export default function FontCompareView({ allFonts = [] }) {
     <div className="space-y-3.5 animate-modal">
       <div className="card rounded p-3 sm:p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-2.5">
-          <span className="w-6 h-6 rounded bg-primary text-white flex items-center justify-center font-bold text-xs font-mono shrink-0">
+          <span className="w-6 h-6 rounded bg-primary text-bg flex items-center justify-center font-bold text-xs font-mono shrink-0">
             {comparedFonts.length}
           </span>
           <div>

@@ -45,7 +45,7 @@ export default function EmptyState() {
       <div
         className={`w-14 h-14 rounded-2xl border flex items-center justify-center transition-all duration-200 ${
           isDragActive
-            ? "bg-primary text-white border-primary scale-110"
+            ? "bg-primary text-bg border-primary scale-110"
             : "bg-panel border-border group-hover:scale-105"
         }`}
       >
