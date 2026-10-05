@@ -1,2 +1,13 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Googlebot directives
+User-agent: Googlebot
+Allow: /
+
+# Bingbot directives
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://font-stash.souldev.me/sitemap.xml

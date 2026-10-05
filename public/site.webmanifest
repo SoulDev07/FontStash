@@ -1,0 +1,21 @@
+{
+  "name": "FontStash - Local Typography Studio & Font Workbench",
+  "short_name": "FontStash",
+  "description": "Local-first typography playground and font inspection workbench.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090a0f",
+  "theme_color": "#090a0f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

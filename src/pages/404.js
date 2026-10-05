@@ -7,6 +7,7 @@ export default function Custom404() {
     <div className="min-h-screen bg-bg text-text flex flex-col items-center justify-center p-6 text-center select-none">
       <Head>
         <title>404 - Page Not Found | FontStash</title>
+        <meta name="robots" content="noindex, follow" />
       </Head>
 
       <div className="max-w-md flex flex-col items-center">

@@ -1,10 +1,10 @@
-<svg width="1200" height="340" viewBox="0 0 1200 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FontStash - Local Typography Studio &amp; Font Workbench">
+<svg width="840" height="250" viewBox="0 0 840 250" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FontStash - Local Typography Studio &amp; Font Workbench">
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
       .brand-title {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        font-size: 46px;
+        font-size: 38px;
         font-weight: 700;
         fill: #ffffff;
         letter-spacing: -0.03em;
@@ -32,54 +32,48 @@
   </defs>
 
   <!-- Solid Obsidian Background -->
-  <rect width="1200" height="340" fill="#000000"/>
+  <rect width="840" height="250" fill="#000000"/>
 
   <!-- Centered Card Container -->
-  <rect x="50" y="25" width="1100" height="290" rx="4" fill="#060608" stroke="#222226" stroke-width="1"/>
+  <rect x="24" y="14" width="792" height="222" rx="6" fill="#060608" stroke="#222226" stroke-width="1"/>
 
   <!-- Centered Content -->
-  <g transform="translate(600, 68)" text-anchor="middle">
+  <g transform="translate(420, 43)" text-anchor="middle">
     <!-- Brand Logo Mark (4px radius) -->
-    <g transform="translate(-24, 0) scale(1.5)">
+    <g transform="translate(-22, 0) scale(1.4)">
       <rect x="0.5" y="0.5" width="31" height="31" rx="4" fill="#000000" stroke="#333338" stroke-width="1"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8 6.5H25L22.2 9.5H15.4L13.8 13.5H21.5L18.8 16.5H12.6L9 25.5H6L12.8 6.5Z" fill="#ffffff"/>
       <path d="M18 21.5H24.5L23 24.5H16.5L18 21.5Z" fill="#ffffff"/>
     </g>
 
-    <!-- Main Title -->
+    <!-- Main Title (reduced to 38px) -->
     <text y="88" class="brand-title">
       FontStash
     </text>
 
     <!-- Subtitle -->
-    <text y="122" class="brand-sub">
-      Local-first typography playground &amp; OpenType inspection workbench
+    <text y="116" class="brand-sub">
+      Local-first typography playground &amp; font inspection workbench
     </text>
 
-    <!-- Clean Badges Row -->
-    <g transform="translate(0, 154)">
-      <!-- Badge 1 -->
-      <g transform="translate(-230, 0)">
-        <rect x="0" y="0" width="106" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
-        <text x="53" y="17" class="brand-tag" text-anchor="middle">Private &amp; Offline</text>
+    <!-- Badges Row (Private & Offline, IndexedDB, TTF • OTF • WOFF2 only) -->
+    <g transform="translate(0, 138)">
+      <!-- Badge 1: Private & Offline -->
+      <g transform="translate(-174, 0)">
+        <rect x="0" y="0" width="108" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="54" y="17" class="brand-tag" text-anchor="middle">Private &amp; Offline</text>
       </g>
 
-      <!-- Badge 2 -->
-      <g transform="translate(-114, 0)">
-        <rect x="0" y="0" width="104" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
-        <text x="52" y="17" class="brand-tag" text-anchor="middle">Zero Cloud</text>
+      <!-- Badge 2: IndexedDB -->
+      <g transform="translate(-54, 0)">
+        <rect x="0" y="0" width="80" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="40" y="17" class="brand-tag" text-anchor="middle">IndexedDB</text>
       </g>
 
-      <!-- Badge 3 -->
-      <g transform="translate(0, 0)">
-        <rect x="0" y="0" width="134" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
-        <text x="67" y="17" class="brand-mono" text-anchor="middle">TTF • OTF • WOFF2</text>
-      </g>
-
-      <!-- Badge 4 -->
-      <g transform="translate(144, 0)">
-        <rect x="0" y="0" width="86" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
-        <text x="43" y="17" class="brand-tag" text-anchor="middle">OpenType</text>
+      <!-- Badge 3: TTF • OTF • WOFF2 -->
+      <g transform="translate(38, 0)">
+        <rect x="0" y="0" width="136" height="26" rx="3" fill="#121215" stroke="#2a2a2e" stroke-width="1"/>
+        <text x="68" y="17" class="brand-mono" text-anchor="middle">TTF • OTF • WOFF2</text>
       </g>
     </g>
   </g>

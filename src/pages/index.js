@@ -102,9 +102,80 @@ export default function Home({ fontsMeta = [] }) {
   return (
     <DragDropOverlay>
       <Head>
-        <title>FontStash - Local Typography Playground &amp; Workbench</title>
-        <meta name="description" content="Local-first typography playground and font inspection workbench. Private, offline, zero cloud uploads." />
+        <title>FontStash - Local Typography Playground &amp; Font Workbench</title>
+        <meta
+          name="description"
+          content="Local-first typography playground and font inspection workbench. Drop TTF, OTF, WOFF, or WOFF2 files to test specimens, inspect glyphs, and compare fonts privately offline."
+        />
+        <meta
+          name="keywords"
+          content="font playground, typography workbench, font inspector, local font viewer, opentype, truetype, woff2, font specimen, glyph viewer, offline font tool, typography studio"
+        />
+
+        {/* Crawling and Indexing Directives */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+
+        {/* Canonical */}
+        <link rel="canonical" href="https://font-stash.souldev.me/" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="FontStash" />
+        <meta property="og:url" content="https://font-stash.souldev.me/" />
+        <meta property="og:title" content="FontStash - Local Typography Playground &amp; Font Workbench" />
+        <meta
+          property="og:description"
+          content="Local-first typography playground and font inspection workbench. Drop font files to test specimens, inspect glyphs, and compare typefaces privately offline."
+        />
+        <meta property="og:image" content="https://font-stash.souldev.me/og-image.svg" />
+        <meta property="og:image:secure_url" content="https://font-stash.souldev.me/og-image.svg" />
+        <meta property="og:image:type" content="image/svg+xml" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="FontStash Typography Studio &amp; Font Workbench" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FontStash - Local Typography Playground &amp; Font Workbench" />
+        <meta
+          name="twitter:description"
+          content="Local-first typography playground and font inspection workbench. Drop font files to test specimens, inspect glyphs, and compare typefaces privately offline."
+        />
+        <meta name="twitter:image" content="https://font-stash.souldev.me/og-image.svg" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="application-name" content="FontStash" />
+        <meta name="apple-mobile-web-app-title" content="FontStash" />
+        <meta name="theme-color" content="#090a0f" />
+
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "FontStash",
+              "url": "https://font-stash.souldev.me/",
+              "description":
+                "Local-first typography playground and font inspection workbench. Test specimens, inspect glyphs, and compare fonts privately offline.",
+              "applicationCategory": "DesignApplication",
+              "operatingSystem": "All",
+              "browserRequirements": "Requires JavaScript. Requires HTML5.",
+              "featureList": [
+                "Local-first IndexedDB font persistence",
+                "Client-side TTF, OTF, WOFF, and WOFF2 parsing",
+                "Interactive glyph inspector and specimen waterfall",
+                "Poster lab editorial layout testing",
+                "Side-by-side font comparison workbench",
+              ],
+            }),
+          }}
+        />
+
         {staticFontFaces && <style dangerouslySetInnerHTML={{ __html: staticFontFaces }} />}
       </Head>
 
