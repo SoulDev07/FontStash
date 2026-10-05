@@ -4,7 +4,7 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    optimizePackageImports: ["@phosphor-icons/react"],
+    optimizePackageImports: ['@phosphor-icons/react'],
   },
 };
 

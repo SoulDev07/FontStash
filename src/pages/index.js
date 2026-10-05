@@ -1,20 +1,20 @@
-import { useEffect, useMemo } from "react";
-import Head from "next/head";
-import dynamic from "next/dynamic";
-import TopBar from "@/components/TopBar";
-import PreviewControls from "@/components/PreviewControls";
-import FontExplorer from "@/components/FontExplorer";
-import Toast from "@/components/ui/Toast";
-import EmptyState from "@/components/EmptyState";
-import { useFontRegistration } from "@/hooks/useFontRegistration";
-import { useFontStore } from "@/lib/store/useFontStore";
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import { useEffect, useMemo } from 'react';
 
-import DragDropOverlay from "@/components/DragDropOverlay";
+import DragDropOverlay from '@/components/DragDropOverlay';
+import EmptyState from '@/components/EmptyState';
+import FontExplorer from '@/components/FontExplorer';
+import PreviewControls from '@/components/PreviewControls';
+import TopBar from '@/components/TopBar';
+import Toast from '@/components/ui/Toast';
+import { useFontRegistration } from '@/hooks/useFontRegistration';
+import { useFontStore } from '@/lib/store/useFontStore';
 
-const PosterLab = dynamic(() => import("@/components/PosterLab"), { ssr: false });
-const FontCompareView = dynamic(() => import("@/components/FontCompareView"), { ssr: false });
-const FontSpecimenModal = dynamic(() => import("@/components/FontSpecimenModal"), { ssr: false });
-const CommandPalette = dynamic(() => import("@/components/CommandPalette"), { ssr: false });
+const PosterLab = dynamic(() => import('@/components/PosterLab'), { ssr: false });
+const FontCompareView = dynamic(() => import('@/components/FontCompareView'), { ssr: false });
+const FontSpecimenModal = dynamic(() => import('@/components/FontSpecimenModal'), { ssr: false });
+const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
 
 export default function Home({ fontsMeta = [] }) {
   const {
@@ -48,13 +48,18 @@ export default function Home({ fontsMeta = [] }) {
   const filteredFonts = useMemo(() => {
     const q = query.trim().toLowerCase();
     const matches = allFonts.filter((font) => {
-      const name = (font.family || font.originalName || "").toLowerCase();
+      const name = (font.family || font.originalName || '').toLowerCase();
 
       const searchMatch =
         !q ||
-        [font.originalName, font.family, font.style, font.formatLabel, font.designer, font.manufacturer].some((v) =>
-          v && v.toLowerCase().includes(q)
-        );
+        [
+          font.originalName,
+          font.family,
+          font.style,
+          font.formatLabel,
+          font.designer,
+          font.manufacturer,
+        ].some((v) => v && v.toLowerCase().includes(q));
 
       if (!searchMatch) return false;
 
@@ -66,26 +71,35 @@ export default function Home({ fontsMeta = [] }) {
         return false;
       }
 
-      if (categoryFilter && categoryFilter !== "all") {
-        const isMono = /mono|code|consolas|courier|typewriter|inconsolata|fira\s*code|jetbrains/i.test(name);
-        const isSerif = !isMono && /serif|roman|garamond|times|caslon|georgia|baskerville|bodoni|didot|minion|merriweather|playfair/i.test(name);
-        const isDisplay = /display|script|hand|comic|blackletter|stencil|gothic|decorative/i.test(name);
+      if (categoryFilter && categoryFilter !== 'all') {
+        const isMono =
+          /mono|code|consolas|courier|typewriter|inconsolata|fira\s*code|jetbrains/i.test(name);
+        const isSerif =
+          !isMono &&
+          /serif|roman|garamond|times|caslon|georgia|baskerville|bodoni|didot|minion|merriweather|playfair/i.test(
+            name
+          );
+        const isDisplay = /display|script|hand|comic|blackletter|stencil|gothic|decorative/i.test(
+          name
+        );
         const isSans = !isMono && !isSerif;
 
-        if (categoryFilter === "mono" && !isMono) return false;
-        if (categoryFilter === "serif" && !isSerif) return false;
-        if (categoryFilter === "sans" && !isSans) return false;
-        if (categoryFilter === "display" && !isDisplay) return false;
+        if (categoryFilter === 'mono' && !isMono) return false;
+        if (categoryFilter === 'serif' && !isSerif) return false;
+        if (categoryFilter === 'sans' && !isSans) return false;
+        if (categoryFilter === 'display' && !isDisplay) return false;
       }
 
       return true;
     });
 
     return matches.sort((a, b) => {
-      if (sort === "az") return (a.family || a.originalName).localeCompare(b.family || b.originalName);
-      if (sort === "za") return (b.family || b.originalName).localeCompare(a.family || a.originalName);
-      if (sort === "type") return (a.extension || "").localeCompare(b.extension || "");
-      if (sort === "glyphs") return (b.numGlyphs || 0) - (a.numGlyphs || 0);
+      if (sort === 'az')
+        return (a.family || a.originalName).localeCompare(b.family || b.originalName);
+      if (sort === 'za')
+        return (b.family || b.originalName).localeCompare(a.family || a.originalName);
+      if (sort === 'type') return (a.extension || '').localeCompare(b.extension || '');
+      if (sort === 'glyphs') return (b.numGlyphs || 0) - (a.numGlyphs || 0);
       return (a.index || 0) - (b.index || 0);
     });
   }, [allFonts, query, extensions, categoryFilter, favoritesOnly, favorites, sort]);
@@ -96,7 +110,7 @@ export default function Home({ fontsMeta = [] }) {
         (f) =>
           `@font-face { font-family: '${f.fontFamily}'; src: url('${f.url}') format('${f.format}'); font-display: swap; }`
       )
-      .join("\n");
+      .join('\n');
   }, [fontsMeta]);
 
   return (
@@ -113,7 +127,10 @@ export default function Home({ fontsMeta = [] }) {
         />
 
         {/* Crawling and Indexing Directives */}
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large" />
 
@@ -124,7 +141,10 @@ export default function Home({ fontsMeta = [] }) {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="FontStash" />
         <meta property="og:url" content="https://font-stash.souldev.me/" />
-        <meta property="og:title" content="FontStash - Local Typography Playground &amp; Font Workbench" />
+        <meta
+          property="og:title"
+          content="FontStash - Local Typography Playground &amp; Font Workbench"
+        />
         <meta
           property="og:description"
           content="Local-first typography playground and font inspection workbench. Drop font files to test specimens, inspect glyphs, and compare typefaces privately offline."
@@ -139,14 +159,20 @@ export default function Home({ fontsMeta = [] }) {
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="FontStash - Local Typography Playground &amp; Font Workbench" />
+        <meta
+          name="twitter:title"
+          content="FontStash - Local Typography Playground &amp; Font Workbench"
+        />
         <meta
           name="twitter:description"
           content="Local-first typography playground and font inspection workbench. Drop font files to test specimens, inspect glyphs, and compare typefaces privately offline."
         />
         <meta name="twitter:image" content="https://font-stash.souldev.me/og-image.svg" />
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover"
+        />
         <meta name="application-name" content="FontStash" />
         <meta name="apple-mobile-web-app-title" content="FontStash" />
         <meta name="theme-color" content="#090a0f" />
@@ -156,21 +182,21 @@ export default function Home({ fontsMeta = [] }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": "FontStash",
-              "url": "https://font-stash.souldev.me/",
-              "description":
-                "Local-first typography playground and font inspection workbench. Test specimens, inspect glyphs, and compare fonts privately offline.",
-              "applicationCategory": "DesignApplication",
-              "operatingSystem": "All",
-              "browserRequirements": "Requires JavaScript. Requires HTML5.",
-              "featureList": [
-                "Local-first IndexedDB font persistence",
-                "Client-side TTF, OTF, WOFF, and WOFF2 parsing",
-                "Interactive glyph inspector and specimen waterfall",
-                "Poster lab editorial layout testing",
-                "Side-by-side font comparison workbench",
+              '@context': 'https://schema.org',
+              '@type': 'WebApplication',
+              name: 'FontStash',
+              url: 'https://font-stash.souldev.me/',
+              description:
+                'Local-first typography playground and font inspection workbench. Test specimens, inspect glyphs, and compare fonts privately offline.',
+              applicationCategory: 'DesignApplication',
+              operatingSystem: 'All',
+              browserRequirements: 'Requires JavaScript. Requires HTML5.',
+              featureList: [
+                'Local-first IndexedDB font persistence',
+                'Client-side TTF, OTF, WOFF, and WOFF2 parsing',
+                'Interactive glyph inspector and specimen waterfall',
+                'Poster lab editorial layout testing',
+                'Side-by-side font comparison workbench',
               ],
             }),
           }}
@@ -183,15 +209,10 @@ export default function Home({ fontsMeta = [] }) {
       <FontSpecimenModal />
       <Toast />
 
-      <TopBar
-        query={query}
-        setQuery={setQuery}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-      />
+      <TopBar query={query} setQuery={setQuery} viewMode={viewMode} setViewMode={setViewMode} />
 
-      <main className="max-w-380 mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-8 flex flex-col gap-4 sm:gap-7 pb-20">
-        {viewMode !== "poster" && (
+      <main className="mx-auto flex max-w-380 flex-col gap-4 px-3 py-4 pb-20 sm:gap-7 sm:px-6 sm:py-8 md:px-8">
+        {viewMode !== 'poster' && (
           <PreviewControls
             query={query}
             setQuery={setQuery}
@@ -204,18 +225,14 @@ export default function Home({ fontsMeta = [] }) {
           />
         )}
 
-        {viewMode === "compare" ? (
+        {viewMode === 'compare' ? (
           <FontCompareView allFonts={allFonts} />
-        ) : viewMode === "poster" ? (
+        ) : viewMode === 'poster' ? (
           <PosterLab allFonts={allFonts} />
         ) : filteredFonts.length === 0 ? (
           <EmptyState />
         ) : (
-          <FontExplorer
-            fonts={filteredFonts}
-            viewMode={viewMode}
-            settings={settings}
-          />
+          <FontExplorer fonts={filteredFonts} viewMode={viewMode} settings={settings} />
         )}
       </main>
     </DragDropOverlay>
@@ -223,14 +240,14 @@ export default function Home({ fontsMeta = [] }) {
 }
 
 export async function getStaticProps() {
-  const fs = await import("node:fs");
-  const path = await import("node:path");
-  const { getFontsMetaFromFiles } = await import("@/lib/utils/fontMetadata");
-  const fontsDir = path.join(process.cwd(), "public", "fonts");
-  
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const { getFontsMetaFromFiles } = await import('@/lib/utils/fontMetadata');
+  const fontsDir = path.join(process.cwd(), 'public', 'fonts');
+
   let files = [];
   try {
-    const walk = (dir, rel = "") => {
+    const walk = (dir, rel = '') => {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
         const full = path.join(dir, entry.name);
@@ -244,7 +261,7 @@ export async function getStaticProps() {
     };
     walk(fontsDir);
   } catch {}
-  
+
   const list = await getFontsMetaFromFiles(files, fontsDir);
   return { props: { fontsMeta: list } };
 }

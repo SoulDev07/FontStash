@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { registerFontFace } from "@/lib/utils/fontUtils";
+import { useEffect } from 'react';
+
+import { registerFontFace } from '@/lib/utils/fontUtils';
 
 export function useFontRegistration(fonts) {
   useEffect(() => {
@@ -7,7 +8,7 @@ export function useFontRegistration(fonts) {
       try {
         registerFontFace(f.fontFamily, f.url, f.format);
       } catch (err) {
-        console.error("Failed to register font face for", f.fontFamily, err);
+        console.error('Failed to register font face for', f.fontFamily, err);
       }
     });
   }, [fonts]);

@@ -14,11 +14,12 @@ A local-first, private typography studio and font workbench. Drop font files dir
 
 ---
 
-## Highlights
+## Images
 
-- **Binary Font Metadata Parsing**: Deep font metadata extraction for authentic designer, manufacturer/foundry, copyright, license, glyph count, units per EM, weight class, and version information.
-- **Drag & Drop Sandbox**: Drop TTF, OTF, WOFF, or WOFF2 files anywhere in the window for client-side ingestion stored safely in private IndexedDB storage.
-- **Deep Specimen Inspector**: Size waterfall, interactive glyph wall with click-to-copy hex codes, editorial layout testing, and technical metadata tables.
+![Typeface Explorer](public/github/font-explorer.webp)
+![Specimen Inspector](public/github/specimen-inspector.webp)
+![Specimen Grid View](public/github/grid-view.webp)
+![Poster Lab](public/github/poster-lab.webp)
 
 ---
 
@@ -26,6 +27,7 @@ A local-first, private typography studio and font workbench. Drop font files dir
 
 - **Framework**: Next.js 16 + React 19
 - **Styling**: Tailwind CSS v4
+- **Tooling**: oxlint + oxfmt
 - **Icons**: Phosphor Icons (`@phosphor-icons/react`)
 
 ---
@@ -33,20 +35,31 @@ A local-first, private typography studio and font workbench. Drop font files dir
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 20+
 - pnpm
 
 ### 1. Install dependencies
+
 ```bash
 pnpm install
 ```
 
 ### 2. Start development server
+
 ```bash
 pnpm dev
 ```
 
-### 3. Open in browser
+### 3. Build & start for production
+
+```bash
+pnpm build
+pnpm start
+```
+
+### 4. Open in browser
+
 Visit [http://localhost:3000](http://localhost:3000). Drop font files directly into the browser or add them to `public/fonts`.
 
 ---

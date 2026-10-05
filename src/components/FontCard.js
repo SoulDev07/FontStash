@@ -1,5 +1,3 @@
-import { useState, useMemo, memo } from "react";
-import { useFontStore } from "@/lib/store/useFontStore";
 import {
   DownloadSimpleIcon,
   CopyIcon,
@@ -7,7 +5,10 @@ import {
   HeartIcon,
   ScalesIcon,
   TrashIcon,
-} from "@phosphor-icons/react";
+} from '@phosphor-icons/react';
+import { useState, useMemo, memo } from 'react';
+
+import { useFontStore } from '@/lib/store/useFontStore';
 
 function FontCard({ font, text, settings, id }) {
   const { fontFamily, originalName, format } = font;
@@ -29,16 +30,23 @@ function FontCard({ font, text, settings, id }) {
       letterSpacing: `${settings.letterSpacing}px`,
       textAlign: settings.alignment,
       textTransform: settings.transform,
-      wordBreak: "break-word",
-      overflowWrap: "break-word",
+      wordBreak: 'break-word',
+      overflowWrap: 'break-word',
     }),
-    [fontFamily, settings.fontSize, settings.lineHeight, settings.letterSpacing, settings.alignment, settings.transform]
+    [
+      fontFamily,
+      settings.fontSize,
+      settings.lineHeight,
+      settings.letterSpacing,
+      settings.alignment,
+      settings.transform,
+    ]
   );
 
   const getFormatLabel = () => font.formatLabel || font.extension.toUpperCase();
 
   const copyCssSnippet = () => {
-    const cleanName = font.family || originalName.replace(/\.[^.]+$/, "");
+    const cleanName = font.family || originalName.replace(/\.[^.]+$/, '');
     const css = `@font-face {\n  font-family: '${cleanName}';\n  src: url('${font.url || `/fonts/${originalName}`}') format('${format}');\n  font-display: swap;\n}`;
     navigator.clipboard.writeText(css).then(() => {
       setCopied(true);
@@ -48,7 +56,7 @@ function FontCard({ font, text, settings, id }) {
   };
 
   const handleDownload = () => {
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = font.url || `/fonts/${originalName}`;
     link.download = originalName;
     document.body.appendChild(link);
@@ -57,62 +65,71 @@ function FontCard({ font, text, settings, id }) {
     showToast(`Downloading ${originalName}`);
   };
 
-  const cleanTitle = font.family || originalName.replace(/\.[^.]+$/, "");
+  const cleanTitle = font.family || originalName.replace(/\.[^.]+$/, '');
 
   return (
-    <div id={id || `font-${font.id}`} className="card rounded flex flex-col h-[240px] sm:h-[248px] hover:border-text transition-colors duration-150 group overflow-hidden select-none">
-      <div className="h-[54px] shrink-0 px-4 py-2.5 flex items-center justify-between gap-3 border-b border-border bg-panel/30">
+    <div
+      id={id || `font-${font.id}`}
+      className="card hover:border-text group flex h-[240px] flex-col overflow-hidden rounded transition-colors duration-150 select-none sm:h-[248px]"
+    >
+      <div className="border-border bg-panel/30 flex h-[54px] shrink-0 items-center justify-between gap-3 border-b px-4 py-2.5">
         <div className="min-w-0 flex-1 cursor-pointer" onClick={() => setActiveSpecimenFont(font)}>
           <div className="flex items-center gap-2 truncate">
             <h3
-              className="font-bold text-sm text-text truncate group-hover:underline underline-offset-2"
+              className="text-text truncate text-sm font-bold underline-offset-2 group-hover:underline"
               title={cleanTitle}
             >
               {cleanTitle}
             </h3>
-            <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-panel border border-border text-muted shrink-0" suppressHydrationWarning>
+            <span
+              className="bg-panel border-border text-muted shrink-0 rounded border px-1.5 py-0.5 font-mono text-[10px] font-semibold"
+              suppressHydrationWarning
+            >
               {getFormatLabel()}
             </span>
           </div>
-          <p className="text-[11px] text-muted font-mono truncate mt-0.5" title={`${font.style || "Normal"} • ${font.weight || 400}`}>
-            {font.style || "Normal"} &bull; {font.weight || 400}
+          <p
+            className="text-muted mt-0.5 truncate font-mono text-[11px]"
+            title={`${font.style || 'Normal'} • ${font.weight || 400}`}
+          >
+            {font.style || 'Normal'} &bull; {font.weight || 400}
           </p>
         </div>
 
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex shrink-0 items-center gap-1">
           <button
             onClick={() => {
               toggleFavorite(font.id);
-              showToast(isFav ? "Removed from favorites" : "Added to favorites");
+              showToast(isFav ? 'Removed from favorites' : 'Added to favorites');
             }}
-            className={`w-7 h-7 rounded border transition-colors flex items-center justify-center cursor-pointer active:scale-[0.97] ${
+            className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded border transition-colors active:scale-[0.97] ${
               isFav
-                ? "bg-text text-bg border-text"
-                : "border-border text-muted hover:text-text hover:border-text bg-card"
+                ? 'bg-text text-bg border-text'
+                : 'border-border text-muted hover:text-text hover:border-text bg-card'
             }`}
-            title={isFav ? "Favorited" : "Favorite"}
+            title={isFav ? 'Favorited' : 'Favorite'}
           >
-            <HeartIcon size={13} weight={isFav ? "fill" : "regular"} />
+            <HeartIcon size={13} weight={isFav ? 'fill' : 'regular'} />
           </button>
 
           <button
             onClick={() => {
               toggleCompare(font.id);
-              showToast(isCompared ? "Removed from compare" : "Added to compare list");
+              showToast(isCompared ? 'Removed from compare' : 'Added to compare list');
             }}
-            className={`w-7 h-7 rounded border transition-colors flex items-center justify-center cursor-pointer active:scale-[0.97] ${
+            className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded border transition-colors active:scale-[0.97] ${
               isCompared
-                ? "bg-text text-bg border-text"
-                : "border-border text-muted hover:text-text hover:border-text bg-card"
+                ? 'bg-text text-bg border-text'
+                : 'border-border text-muted hover:text-text hover:border-text bg-card'
             }`}
-            title={isCompared ? "In compare workbench" : "Compare"}
+            title={isCompared ? 'In compare workbench' : 'Compare'}
           >
-            <ScalesIcon size={13} weight={isCompared ? "fill" : "regular"} />
+            <ScalesIcon size={13} weight={isCompared ? 'fill' : 'regular'} />
           </button>
 
           <button
             onClick={copyCssSnippet}
-            className="w-7 h-7 rounded border border-border text-muted hover:text-text hover:border-text bg-card flex items-center justify-center cursor-pointer active:scale-[0.97] transition-colors"
+            className="border-border text-muted hover:text-text hover:border-text bg-card flex h-7 w-7 cursor-pointer items-center justify-center rounded border transition-colors active:scale-[0.97]"
             title="Copy @font-face CSS"
           >
             {copied ? <CheckIcon size={12} weight="bold" /> : <CopyIcon size={12} />}
@@ -120,7 +137,7 @@ function FontCard({ font, text, settings, id }) {
 
           <button
             onClick={handleDownload}
-            className="w-7 h-7 rounded border border-border text-muted hover:text-text hover:border-text bg-card flex items-center justify-center cursor-pointer active:scale-[0.97] transition-colors"
+            className="border-border text-muted hover:text-text hover:border-text bg-card flex h-7 w-7 cursor-pointer items-center justify-center rounded border transition-colors active:scale-[0.97]"
             title="Download font file"
           >
             <DownloadSimpleIcon size={12} weight="bold" />
@@ -132,7 +149,7 @@ function FontCard({ font, text, settings, id }) {
                 removeCustomFont(font.id);
                 showToast(`Removed ${cleanTitle}`);
               }}
-              className="w-7 h-7 rounded border border-border text-muted hover:text-danger hover:border-danger bg-card flex items-center justify-center cursor-pointer active:scale-[0.97] transition-colors"
+              className="border-border text-muted hover:text-danger hover:border-danger bg-card flex h-7 w-7 cursor-pointer items-center justify-center rounded border transition-colors active:scale-[0.97]"
               title="Delete font"
             >
               <TrashIcon size={12} />
@@ -143,21 +160,28 @@ function FontCard({ font, text, settings, id }) {
 
       <div
         onClick={() => setActiveSpecimenFont(font)}
-        className="flex-1 min-h-0 p-4 sm:p-5 flex items-center justify-center cursor-pointer hover:bg-panel/15 transition-colors overflow-hidden"
+        className="hover:bg-panel/15 flex min-h-0 flex-1 cursor-pointer items-center justify-center overflow-hidden p-4 transition-colors sm:p-5"
         title="Click to inspect typeface"
       >
-        <div className="w-full text-text leading-normal max-h-full overflow-hidden" style={previewStyle}>
-          {text || "The quick brown fox jumps over the lazy dog."}
+        <div
+          className="text-text max-h-full w-full overflow-hidden leading-normal"
+          style={previewStyle}
+        >
+          {text || 'The quick brown fox jumps over the lazy dog.'}
         </div>
       </div>
 
-      <div className="h-[36px] shrink-0 mt-auto px-4 py-2 border-t border-border/60 bg-panel/20 flex items-center justify-between text-[11px] font-mono text-muted select-none">
+      <div className="border-border/60 bg-panel/20 text-muted mt-auto flex h-[36px] shrink-0 items-center justify-between border-t px-4 py-2 font-mono text-[11px] select-none">
         <span>
-          {font.numGlyphs ? `${font.numGlyphs} Glyphs` : font.unitsPerEm ? `UPM ${font.unitsPerEm}` : "Typeface"}
+          {font.numGlyphs
+            ? `${font.numGlyphs} Glyphs`
+            : font.unitsPerEm
+              ? `UPM ${font.unitsPerEm}`
+              : 'Typeface'}
         </span>
         <button
           onClick={() => setActiveSpecimenFont(font)}
-          className="text-[10px] text-muted hover:text-text cursor-pointer hover:underline"
+          className="text-muted hover:text-text cursor-pointer text-[10px] hover:underline"
         >
           Inspect &rarr;
         </button>
@@ -167,4 +191,3 @@ function FontCard({ font, text, settings, id }) {
 }
 
 export default memo(FontCard);
-

@@ -1,15 +1,15 @@
 function hasLocalStorage() {
-  return typeof window !== "undefined" && typeof localStorage !== "undefined";
+  return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
 }
 
 export function saveToLocalStorage(key, value) {
   if (!hasLocalStorage()) return;
 
   try {
-    const str = typeof value === "string" ? value : JSON.stringify(value);
+    const str = typeof value === 'string' ? value : JSON.stringify(value);
     localStorage.setItem(key, str);
   } catch (e) {
-    console.warn("Failed to save to localStorage", key, e);
+    console.warn('Failed to save to localStorage', key, e);
   }
 }
 
@@ -25,8 +25,7 @@ export function loadFromLocalStorage(key, fallback) {
       return raw;
     }
   } catch (e) {
-    console.warn("Failed to load from localStorage", key, e);
+    console.warn('Failed to load from localStorage', key, e);
     return fallback;
   }
 }
-

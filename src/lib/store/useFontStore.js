@@ -1,24 +1,29 @@
-import { create } from "zustand";
-import { loadFromLocalStorage, saveToLocalStorage } from "@/lib/utils/localStorageUtils";
+import { create } from 'zustand';
+
 import {
   saveFontToDb,
   getFontsFromDb,
   deleteFontFromDb,
   getStorageEstimate,
   requestStoragePersistence,
-} from "@/lib/utils/fontDb";
-import { registerFontFaceFromBuffer, createBlobUrlFromBuffer, unregisterFontFace } from "@/lib/utils/fontUtils";
+} from '@/lib/utils/fontDb';
+import {
+  registerFontFaceFromBuffer,
+  createBlobUrlFromBuffer,
+  unregisterFontFace,
+} from '@/lib/utils/fontUtils';
+import { loadFromLocalStorage, saveToLocalStorage } from '@/lib/utils/localStorageUtils';
 
-const PREVIEW_KEY = "font-stash:preview-settings";
-const FAVORITES_KEY = "font-stash:favorites";
+const PREVIEW_KEY = 'font-stash:preview-settings';
+const FAVORITES_KEY = 'font-stash:favorites';
 
 const DEFAULT_SETTINGS = {
-  sampleText: "The quick brown fox jumps over the lazy dog.",
+  sampleText: 'The quick brown fox jumps over the lazy dog.',
   fontSize: 24,
   lineHeight: 1.5,
   letterSpacing: 0,
-  alignment: "left",
-  transform: "none",
+  alignment: 'left',
+  transform: 'none',
 };
 
 export const useFontStore = create((set, get) => ({
@@ -27,21 +32,21 @@ export const useFontStore = create((set, get) => ({
   updateSetting: (key, value) => {
     set((state) => {
       const updated = { ...state.settings, [key]: value };
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         saveToLocalStorage(PREVIEW_KEY, updated);
       }
       return { settings: updated };
     });
   },
   resetSettings: () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       saveToLocalStorage(PREVIEW_KEY, DEFAULT_SETTINGS);
     }
     set({ settings: DEFAULT_SETTINGS });
   },
 
   // View & UI State
-  viewMode: "list",
+  viewMode: 'list',
   setViewMode: (mode) => set({ viewMode: mode }),
   commandOpen: false,
   setCommandOpen: (open) => set({ commandOpen: open }),
@@ -56,7 +61,7 @@ export const useFontStore = create((set, get) => ({
       const updated = exists
         ? state.favorites.filter((id) => id !== fontId)
         : [...state.favorites, fontId];
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         saveToLocalStorage(FAVORITES_KEY, updated);
       }
       return { favorites: updated };
@@ -71,8 +76,8 @@ export const useFontStore = create((set, get) => ({
       const updated = exists
         ? state.compareIds.filter((id) => id !== fontId)
         : state.compareIds.length < 4
-        ? [...state.compareIds, fontId]
-        : state.compareIds;
+          ? [...state.compareIds, fontId]
+          : state.compareIds;
       return { compareIds: updated };
     });
   },
@@ -89,7 +94,7 @@ export const useFontStore = create((set, get) => ({
 
   // Custom Ingested Fonts (IndexedDB Binary Store)
   customFonts: [],
-  storageStats: { usageMB: "0.0", quotaMB: "0", percentage: "0" },
+  storageStats: { usageMB: '0.0', quotaMB: '0', percentage: '0' },
 
   addCustomFont: async (fontRecord) => {
     await saveFontToDb(fontRecord);
@@ -126,7 +131,7 @@ export const useFontStore = create((set, get) => ({
 
   // Toast notifications
   toast: null,
-  showToast: (message, type = "success") => {
+  showToast: (message, type = 'success') => {
     set({ toast: { message, type, id: Date.now() } });
     setTimeout(() => {
       set((state) => (state.toast && state.toast.message === message ? { toast: null } : state));
@@ -134,14 +139,14 @@ export const useFontStore = create((set, get) => ({
   },
 
   // Search & Filter
-  query: "",
+  query: '',
   setQuery: (q) => set({ query: q }),
   extensions: [],
-  categoryFilter: "all",
+  categoryFilter: 'all',
   setCategoryFilter: (c) => set({ categoryFilter: c }),
   favoritesOnly: false,
   setFavoritesOnly: (f) => set({ favoritesOnly: f }),
-  sort: "index",
+  sort: 'index',
   setSort: (s) => set({ sort: s }),
   toggleFilter: (value) => {
     set((state) => {
@@ -155,15 +160,15 @@ export const useFontStore = create((set, get) => ({
   clearAllFilters: () => {
     set({
       extensions: [],
-      categoryFilter: "all",
+      categoryFilter: 'all',
       favoritesOnly: false,
-      sort: "index",
+      sort: 'index',
     });
   },
 
   // Hydration initialization from LocalStorage and IndexedDB
   hydrate: async () => {
-    if (typeof window === "undefined") return;
+    if (typeof window === 'undefined') return;
 
     requestStoragePersistence();
 
@@ -191,4 +196,3 @@ export const useFontStore = create((set, get) => ({
     });
   },
 }));
-

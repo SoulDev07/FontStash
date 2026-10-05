@@ -1,15 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import { useFontStore } from "@/lib/store/useFontStore";
-import ViewModeToggle from "@/components/ViewModeToggle";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
-import { MagnifyingGlassIcon, XIcon, CommandIcon } from "@phosphor-icons/react";
+import { MagnifyingGlassIcon, XIcon, CommandIcon } from '@phosphor-icons/react';
+import { useState, useRef, useEffect } from 'react';
 
-export default function TopBar({
-  query,
-  setQuery,
-  viewMode,
-  setViewMode,
-}) {
+import ThemeSwitcher from '@/components/ThemeSwitcher';
+import ViewModeToggle from '@/components/ViewModeToggle';
+import { useFontStore } from '@/lib/store/useFontStore';
+
+export default function TopBar({ query, setQuery, viewMode, setViewMode }) {
   const { setCommandOpen } = useFontStore();
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [isMac, setIsMac] = useState(false);
@@ -19,23 +15,27 @@ export default function TopBar({
     setIsMac(/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform || navigator.userAgent));
 
     const handleSlash = (e) => {
-      if (e.key === "/" && document.activeElement && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+      if (
+        e.key === '/' &&
+        document.activeElement &&
+        !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)
+      ) {
         e.preventDefault();
         if (searchInputRef.current) searchInputRef.current.focus();
       }
     };
 
-    window.addEventListener("keydown", handleSlash);
-    return () => window.removeEventListener("keydown", handleSlash);
+    window.addEventListener('keydown', handleSlash);
+    return () => window.removeEventListener('keydown', handleSlash);
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 bg-bg/90 backdrop-blur-xl border-b border-border/80 transition-colors">
-      <div className="max-w-380 mx-auto px-3.5 sm:px-6 md:px-8 h-14 sm:h-15 flex items-center justify-between gap-3">
+    <header className="bg-bg/90 border-border/80 sticky top-0 z-30 border-b backdrop-blur-xl transition-colors">
+      <div className="mx-auto flex h-14 max-w-380 items-center justify-between gap-3 px-3.5 sm:h-15 sm:px-6 md:px-8">
         <button
           type="button"
-          className="flex items-center gap-2.5 select-none shrink-0 group cursor-pointer active:scale-[0.97] transition-transform duration-140 bg-transparent border-0 p-0"
-          onClick={() => setQuery("")}
+          className="group flex shrink-0 cursor-pointer items-center gap-2.5 border-0 bg-transparent p-0 transition-transform duration-140 select-none active:scale-[0.97]"
+          onClick={() => setQuery('')}
           title="Reset search / FontStash home"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -44,33 +44,36 @@ export default function TopBar({
             alt="FontStash Logo"
             width={24}
             height={24}
-            className="w-6 h-6 shrink-0 shadow-xs transition-transform duration-200 group-hover:scale-105"
+            className="h-6 w-6 shrink-0 shadow-xs transition-transform duration-200 group-hover:scale-105"
           />
-          <span className="font-bold text-sm text-text tracking-tight font-sans group-hover:text-primary transition-colors duration-150">
+          <span className="text-text group-hover:text-primary font-sans text-sm font-bold tracking-tight transition-colors duration-150">
             FontStash
           </span>
         </button>
 
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          <div className="hidden sm:flex items-center gap-2 rounded sm:w-48 md:w-64 h-8.5 px-3 border border-border bg-panel/70 focus-within:border-text focus-within:bg-card focus-within:shadow-xs transition-all duration-150 group">
-            <MagnifyingGlassIcon size={14} className="text-muted group-focus-within:text-text transition-colors duration-150 shrink-0" />
+        <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+          <div className="border-border bg-panel/70 focus-within:border-text focus-within:bg-card group hidden h-8.5 items-center gap-2 rounded border px-3 transition-all duration-150 focus-within:shadow-xs sm:flex sm:w-48 md:w-64">
+            <MagnifyingGlassIcon
+              size={14}
+              className="text-muted group-focus-within:text-text shrink-0 transition-colors duration-150"
+            />
             <input
               ref={searchInputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search typefaces..."
-              className="w-full text-xs font-medium bg-transparent outline-none text-text placeholder:text-muted truncate"
+              className="text-text placeholder:text-muted w-full truncate bg-transparent text-xs font-medium outline-none"
             />
             {query ? (
               <button
-                onClick={() => setQuery("")}
-                className="p-0.5 rounded text-muted hover:text-text hover:rotate-90 cursor-pointer active:scale-90 transition-all duration-150 shrink-0"
+                onClick={() => setQuery('')}
+                className="text-muted hover:text-text shrink-0 cursor-pointer rounded p-0.5 transition-all duration-150 hover:rotate-90 active:scale-90"
                 title="Clear search"
               >
                 <XIcon size={12} />
               </button>
             ) : (
-              <kbd className="hidden lg:inline text-[9px] font-mono px-1.5 py-0.5 rounded-xs bg-card border border-border text-muted select-none shrink-0 transition-opacity duration-150 group-focus-within:opacity-40">
+              <kbd className="bg-card border-border text-muted hidden shrink-0 rounded-xs border px-1.5 py-0.5 font-mono text-[9px] transition-opacity duration-150 select-none group-focus-within:opacity-40 lg:inline">
                 /
               </kbd>
             )}
@@ -78,8 +81,10 @@ export default function TopBar({
 
           <button
             onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-            className={`sm:hidden w-8.5 h-8.5 rounded border flex items-center justify-center transition-all duration-140 cursor-pointer active:scale-95 ${
-              mobileSearchOpen ? "bg-text text-bg border-text shadow-xs" : "border-border text-muted bg-panel/70"
+            className={`flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded border transition-all duration-140 active:scale-95 sm:hidden ${
+              mobileSearchOpen
+                ? 'bg-text text-bg border-text shadow-xs'
+                : 'border-border text-muted bg-panel/70'
             }`}
             title="Search fonts"
           >
@@ -90,13 +95,16 @@ export default function TopBar({
 
           <button
             onClick={() => setCommandOpen(true)}
-            className="hidden md:flex h-8.5 px-3 rounded border border-border bg-card hover:bg-panel hover:border-text text-xs text-text items-center gap-2 cursor-pointer transition-all duration-140 active:scale-95 group shadow-2xs"
-            title={`Open Command Palette (${isMac ? "⌘K" : "Ctrl+K"})`}
+            className="border-border bg-card hover:bg-panel hover:border-text text-text group hidden h-8.5 cursor-pointer items-center gap-2 rounded border px-3 text-xs shadow-2xs transition-all duration-140 active:scale-95 md:flex"
+            title={`Open Command Palette (${isMac ? '⌘K' : 'Ctrl+K'})`}
           >
-            <CommandIcon size={14} className="text-muted group-hover:text-text transition-colors duration-150" />
-            <span className="font-sans font-medium text-text">Command</span>
-            <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded-xs bg-panel border border-border text-muted select-none group-hover:border-text/40 group-hover:text-text transition-colors duration-150 font-medium">
-              {isMac ? "⌘K" : "Ctrl K"}
+            <CommandIcon
+              size={14}
+              className="text-muted group-hover:text-text transition-colors duration-150"
+            />
+            <span className="text-text font-sans font-medium">Command</span>
+            <kbd className="bg-panel border-border text-muted group-hover:border-text/40 group-hover:text-text rounded-xs border px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors duration-150 select-none">
+              {isMac ? '⌘K' : 'Ctrl K'}
             </kbd>
           </button>
 
@@ -105,20 +113,20 @@ export default function TopBar({
       </div>
 
       {mobileSearchOpen && (
-        <div className="sm:hidden px-3.5 pb-3 pt-1 border-t border-border/60 bg-card animate-drawer-down">
-          <div className="flex items-center gap-2.5 h-9 px-3 rounded border border-border bg-panel/80 focus-within:border-text">
+        <div className="border-border/60 bg-card animate-drawer-down border-t px-3.5 pt-1 pb-3 sm:hidden">
+          <div className="border-border bg-panel/80 focus-within:border-text flex h-9 items-center gap-2.5 rounded border px-3">
             <MagnifyingGlassIcon size={14} className="text-muted shrink-0" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search typefaces by name or format..."
-              className="w-full text-xs font-medium bg-transparent outline-none text-text placeholder:text-muted"
+              className="text-text placeholder:text-muted w-full bg-transparent text-xs font-medium outline-none"
               autoFocus
             />
             {query && (
               <button
-                onClick={() => setQuery("")}
-                className="p-1 rounded text-muted hover:text-text hover:rotate-90 cursor-pointer active:scale-90 transition-all duration-150"
+                onClick={() => setQuery('')}
+                className="text-muted hover:text-text cursor-pointer rounded p-1 transition-all duration-150 hover:rotate-90 active:scale-90"
               >
                 <XIcon size={12} />
               </button>

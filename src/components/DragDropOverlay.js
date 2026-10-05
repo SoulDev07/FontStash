@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
-import { useDrop } from "react-dnd";
-import { NativeTypes } from "react-dnd-html5-backend";
-import { CloudArrowUpIcon } from "@phosphor-icons/react";
-import { useFontIngest } from "@/hooks/useFontIngest";
+import { CloudArrowUpIcon } from '@phosphor-icons/react';
+import { useEffect, useRef } from 'react';
+import { useDrop } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
+
+import { useFontIngest } from '@/hooks/useFontIngest';
 
 export default function DragDropOverlay({ children }) {
   const { processFiles } = useFontIngest();
@@ -31,9 +32,9 @@ export default function DragDropOverlay({ children }) {
         fileInputRef.current.click();
       }
     };
-    window.addEventListener("fontstash:open-file-picker", handleOpenPicker);
+    window.addEventListener('fontstash:open-file-picker', handleOpenPicker);
     return () => {
-      window.removeEventListener("fontstash:open-file-picker", handleOpenPicker);
+      window.removeEventListener('fontstash:open-file-picker', handleOpenPicker);
     };
   }, []);
 
@@ -42,13 +43,13 @@ export default function DragDropOverlay({ children }) {
     if (files.length > 0) {
       processFiles(files);
     }
-    e.target.value = "";
+    e.target.value = '';
   };
 
   const isDraggingFiles = isOver && canDrop;
 
   return (
-    <div ref={dropRef} className="min-h-screen bg-bg text-text selection:bg-text selection:text-bg">
+    <div ref={dropRef} className="bg-bg text-text selection:bg-text selection:text-bg min-h-screen">
       <input
         ref={fileInputRef}
         type="file"
@@ -61,14 +62,14 @@ export default function DragDropOverlay({ children }) {
       {children}
 
       {isDraggingFiles && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md border-4 border-dashed border-primary flex flex-col items-center justify-center p-8 text-center animate-backdrop select-none pointer-events-auto">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-xl bg-primary/20 text-primary border border-primary/40 shadow-primary/20 animate-pulse-subtle">
+        <div className="border-primary animate-backdrop pointer-events-auto fixed inset-0 z-50 flex flex-col items-center justify-center border-4 border-dashed bg-black/85 p-8 text-center backdrop-blur-md select-none">
+          <div className="bg-primary/20 text-primary border-primary/40 shadow-primary/20 animate-pulse-subtle mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border shadow-xl">
             <CloudArrowUpIcon size={32} weight="bold" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">
+          <h2 className="mb-2 text-xl font-bold tracking-tight text-white sm:text-2xl">
             Drop Font Files to Add
           </h2>
-          <p className="text-xs text-gray-400 max-w-sm">
+          <p className="max-w-sm text-xs text-gray-400">
             Release TTF, OTF, WOFF, or WOFF2 files to load them into your library.
           </p>
         </div>

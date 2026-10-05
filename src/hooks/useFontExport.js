@@ -1,19 +1,20 @@
-import { useState, useCallback } from "react";
-import { useFontStore } from "@/lib/store/useFontStore";
+import { useState, useCallback } from 'react';
+
+import { useFontStore } from '@/lib/store/useFontStore';
 
 export function useFontExport(targetRef, options = {}) {
   const [exporting, setExporting] = useState(false);
   const showToast = useFontStore((state) => state.showToast);
 
   const exportPng = useCallback(
-    async (fallbackName = "font-specimen") => {
+    async (fallbackName = 'font-specimen') => {
       if (!targetRef.current || exporting) return;
 
       setExporting(true);
-      showToast("Generating high-res PNG export...");
+      showToast('Generating high-res PNG export...');
 
       try {
-        const { domToPng } = await import("modern-screenshot");
+        const { domToPng } = await import('modern-screenshot');
 
         const dataUrl = await domToPng(targetRef.current, {
           scale: 2,
@@ -21,13 +22,13 @@ export function useFontExport(targetRef, options = {}) {
           ...options,
         });
 
-        const safeName = (fallbackName || "export")
+        const safeName = (fallbackName || 'export')
           .toLowerCase()
-          .replace(/[^a-z0-9_-]+/g, "-")
-          .replace(/^-+|-+$/g, "");
+          .replace(/[^a-z0-9_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
         const filename = `${safeName}.png`;
 
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.download = filename;
         link.href = dataUrl;
         document.body.appendChild(link);
@@ -36,8 +37,8 @@ export function useFontExport(targetRef, options = {}) {
 
         showToast(`Exported ${filename}`);
       } catch (err) {
-        console.error("PNG export failed:", err);
-        showToast("Export failed. Please try again.", "error");
+        console.error('PNG export failed:', err);
+        showToast('Export failed. Please try again.', 'error');
       } finally {
         setExporting(false);
       }

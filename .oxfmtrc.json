@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "printWidth": 100,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "sortImports": true,
+  "sortTailwindcss": true,
+  "ignorePatterns": [".next/**", "node_modules/**", "public/fonts/**"]
+}

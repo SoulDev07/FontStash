@@ -1,7 +1,8 @@
-import { useDrop } from "react-dnd";
-import { NativeTypes } from "react-dnd-html5-backend";
-import { FolderOpenIcon, CloudArrowUpIcon } from "@phosphor-icons/react";
-import { useFontIngest } from "@/hooks/useFontIngest";
+import { FolderOpenIcon, CloudArrowUpIcon } from '@phosphor-icons/react';
+import { useDrop } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
+
+import { useFontIngest } from '@/hooks/useFontIngest';
 
 export default function EmptyState() {
   const { processFiles } = useFontIngest();
@@ -24,8 +25,8 @@ export default function EmptyState() {
   );
 
   const handleOpenPicker = () => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("fontstash:open-file-picker"));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('fontstash:open-file-picker'));
     }
   };
 
@@ -35,35 +36,40 @@ export default function EmptyState() {
     <div
       ref={dropRef}
       onClick={handleOpenPicker}
-      className={`card p-12 sm:p-16 flex flex-col items-center justify-center text-center gap-4 min-h-[300px] rounded-2xl border-dashed border-2 cursor-pointer transition-all duration-200 group select-none ${
+      className={`card group flex min-h-[300px] cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed p-12 text-center transition-all duration-200 select-none sm:p-16 ${
         isDragActive
-          ? "border-primary bg-primary/15 shadow-xl shadow-primary/10 scale-[1.01]"
-          : "border-border/80 bg-panel/20 backdrop-blur-xl hover:border-text/40"
+          ? 'border-primary bg-primary/15 shadow-primary/10 scale-[1.01] shadow-xl'
+          : 'border-border/80 bg-panel/20 hover:border-text/40 backdrop-blur-xl'
       }`}
       title="Click or drop font files to import"
     >
       <div
-        className={`w-14 h-14 rounded-2xl border flex items-center justify-center transition-all duration-200 ${
+        className={`flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-200 ${
           isDragActive
-            ? "bg-primary text-bg border-primary scale-110"
-            : "bg-panel border-border group-hover:scale-105"
+            ? 'bg-primary text-bg border-primary scale-110'
+            : 'bg-panel border-border group-hover:scale-105'
         }`}
       >
         {isDragActive ? (
           <CloudArrowUpIcon size={28} weight="bold" />
         ) : (
-          <FolderOpenIcon size={28} className="text-muted group-hover:text-text transition-colors" />
+          <FolderOpenIcon
+            size={28}
+            className="text-muted group-hover:text-text transition-colors"
+          />
         )}
       </div>
       <div className="max-w-md space-y-2">
-        <h3 className="text-lg font-medium text-text tracking-tight font-sans">
-          {isDragActive ? "Drop font files to add" : "No typefaces found"}
+        <h3 className="text-text font-sans text-lg font-medium tracking-tight">
+          {isDragActive ? 'Drop font files to add' : 'No typefaces found'}
         </h3>
-        <p className="text-sm text-muted">
-          Drag &amp; drop font files here or{" "}
-          <span className="text-text underline underline-offset-4 font-medium">browse to upload</span>
+        <p className="text-muted text-sm">
+          Drag &amp; drop font files here or{' '}
+          <span className="text-text font-medium underline underline-offset-4">
+            browse to upload
+          </span>
         </p>
-        <p className="text-xs font-mono text-muted/70">
+        <p className="text-muted/70 font-mono text-xs">
           Supports .ttf, .otf, .woff, .woff2 &bull; Private &amp; Offline
         </p>
       </div>

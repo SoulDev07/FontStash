@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from 'next/document';
 
 const themeInitScript = `
 (function() {
@@ -52,5 +52,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }

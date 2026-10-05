@@ -8,15 +8,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.mjs"
-  ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "out",
-    "build"
-  ]
+  "include": ["**/*.js", "**/*.jsx", "**/*.mjs"],
+  "exclude": ["node_modules", ".next", "out", "build"]
 }
